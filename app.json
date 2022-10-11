@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "BeerdeguMobile",
-    "slug": "BeerdeguMobile",
+    "name": "beerdegu",
+    "slug": "beerdegu",
+    "owner": "alschn",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
