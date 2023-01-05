@@ -24,7 +24,14 @@ interface AuthContextProviderProps {
 }
 
 interface JWTContent {
-  // todo
+  token_type: "access";
+  exp: number;
+  iat: number;
+  jti: string;
+  user_id: number;
+  // extra fields
+  username: string;
+  email: string;
 }
 
 const AuthContextProvider: FC<AuthContextProviderProps> = ({ children }) => {
@@ -42,7 +49,7 @@ const AuthContextProvider: FC<AuthContextProviderProps> = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        isAuthenticated: !!user,
+        isAuthenticated: true, // todo replace with !!user later
         user,
         completeLogin,
         completeLogout,

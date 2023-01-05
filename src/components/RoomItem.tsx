@@ -1,12 +1,21 @@
 import { useNavigation } from "@react-navigation/native";
+import { FC } from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Room } from "../api/types";
 
-const RoomItem = ({ room }) => {
+interface RoomItemProps {
+  room: Room;
+}
+
+const RoomItem: FC<RoomItemProps> = ({ room }) => {
   const navigation = useNavigation();
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("Room", { roomId: room.id })}
+      onPress={() =>
+        // @ts-ignore
+        navigation.navigate("Room", { roomId: room.id, roomName: room.name })
+      }
     >
       <Text key={`room-item-${room.id}`} style={styles.card}>
         {room.name}

@@ -15,8 +15,29 @@ export type PaginatedResponse<T> = Response<PaginatedResponseData<T>>;
 
 // todo finish api types
 
+type Nullable<T> = T | null;
+
 export interface User {
-  // todo
+  id: number;
+  username: string;
+  email: string;
+}
+
+export interface Room {
+  id: number;
+  name: string;
+  has_password: boolean;
+  host: number;
+  slots: number;
+  state: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface RoomDetail extends Omit<Room, "host"> {
+  host: User;
+  users: User[];
+  beers: Beer[];
 }
 
 export interface Beer {
@@ -24,14 +45,14 @@ export interface Beer {
   name: string;
   percentage: number;
   volume_ml: number;
-  extract: number;
-  IBU: number;
-  hop_rate: number;
-  image?: string;
+  extract: Nullable<number>;
+  IBU: Nullable<number>;
+  hop_rate: Nullable<number>;
+  image: Nullable<string>;
   description: string;
-  brewery?: any; // todo
-  style?: any; // todo
-  hops: any[]; // todo
+  brewery: Nullable<number>;
+  style: Nullable<number>;
+  hops: number[];
 }
 
 export interface BeerSimplified {
@@ -78,10 +99,15 @@ export const WS_COMMAND = {
   SET_USER_RESULTS: "set_user_results",
 } as const;
 
-export type WebsocketCommand = keyof typeof WS_COMMAND;
+export type WebsocketCommand = typeof WS_COMMAND[keyof typeof WS_COMMAND];
 
 export interface WebsocketMessage {
   data: any;
   extra?: any;
   command: WebsocketCommand;
+}
+
+export interface ChatMessage {
+  message: string;
+  user: string;
 }

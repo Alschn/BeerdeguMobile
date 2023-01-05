@@ -5,6 +5,8 @@ import RoomStack from "./RoomStack";
 const Drawer = createDrawerNavigator();
 
 const DrawerNavigation = () => {
+  // todo add logo, logout button and some other improvements
+
   return (
     <Drawer.Navigator
       screenOptions={{
@@ -18,7 +20,11 @@ const DrawerNavigation = () => {
           title: "Home",
         }}
       />
-      <Drawer.Screen name="Rooms2" component={RoomStack} />
+      <Drawer.Screen
+        name="RoomsStack"
+        component={RoomStack}
+        options={{ title: "Rooms" }}
+      />
     </Drawer.Navigator>
   );
 };

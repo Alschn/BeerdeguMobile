@@ -1,11 +1,11 @@
 import axios, { AxiosRequestConfig } from "axios";
-
-const baseURL = "https://192.168.0.1:8000/api";
+import {BASE_URL} from "../config";
 
 const axiosConfig: AxiosRequestConfig = {
   headers: { "Content-Type": "application/json" },
   withCredentials: true,
-  // baseURL: baseURL,
+  baseURL: BASE_URL,
+  timeout: 10_000,
 };
 
 const AxiosClient = axios.create(axiosConfig);

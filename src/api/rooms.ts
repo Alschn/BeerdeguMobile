@@ -1,5 +1,5 @@
-import AxiosClient from "./axiosClient";
-import { PaginatedResponse, Response, Beer } from "./types";
+import AxiosClient from "./AxiosClient";
+import { PaginatedResponse, Response, Beer, Room } from "./types";
 import { AxiosRequestConfig } from "axios";
 
 interface CheckUserInRoomData {
@@ -9,19 +9,6 @@ interface CheckUserInRoomData {
 interface LeaveRoomData {
   message: string;
 }
-
-export const getRooms = (): Promise<PaginatedResponse<any>> => {
-  return AxiosClient.get("/rooms/");
-};
-
-export const joinRoom = (
-  roomName: string,
-  password: string
-): Promise<Response<any>> => {
-  return AxiosClient.put(`/rooms/${roomName}/join/`, {
-    password: password,
-  });
-};
 
 export type CreateRoomPayload = {
   name: string;
@@ -38,8 +25,12 @@ interface RemoveBeerData {
 }
 
 class RoomsService {
-  static getRooms(): Promise<PaginatedResponse<any>> {
+  static getRooms(): Promise<PaginatedResponse<Room>> {
     return AxiosClient.get("/rooms/");
+  }
+
+  static getRoom(roomName: string): Promise<Response<Room>> {
+    return AxiosClient.get(`/rooms/${roomName}/`);
   }
 
   static joinRoom(roomName: string, password: string): Promise<Response<any>> {

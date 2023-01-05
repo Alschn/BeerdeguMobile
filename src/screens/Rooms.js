@@ -1,26 +1,41 @@
-import { Text, View } from "react-native";
-import RoomList from "../components/RoomList";
+import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import RoomsService from "../api/rooms";
+import { View, FlatList, RefreshControl } from "react-native";
+import RoomItem from "../components/RoomItem";
+import { Center } from "native-base";
 
 const RoomsScreen = () => {
-  const rooms = [
-    {
-      id: 1,
-      name: "Room 1",
-    },
-    {
-      id: 2,
-      name: "Room 2",
-    },
-    {
-      id: 3,
-      name: "Room 3",
-    },
-  ];
+  const [page, setPage] = useState(1);
+  const { isLoading, isError, data, refetch, isRefetching } = useQuery(
+    ["rooms", { page }],
+    ({ queryKey }) => RoomsService.getRooms(queryKey[1].page)
+  );
+
+  const pageData = data?.data;
+  const rooms = pageData?.results || [];
+
+  const renderItem = ({ item }) => {
+    return <RoomItem room={item} />;
+  };
+
+  if (isLoading)
+    return <Center flex={1}>{/* todo some kind of skeleton */}</Center>;
 
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <RoomList rooms={rooms} />
-    </View>
+    <Center flex={1}>
+      <View>
+        <FlatList
+          data={rooms}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          numColumns={1}
+          refreshControl={
+            <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
+          }
+        />
+      </View>
+    </Center>
   );
 };
 
