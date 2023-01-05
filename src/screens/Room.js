@@ -5,6 +5,7 @@ import { Center, Text, useToast } from "native-base";
 import { useReducer } from "react";
 import { ActivityIndicator } from "react-native";
 import RoomsService from "../api/rooms";
+import { isClientErrorCode } from "../api/utils/status";
 import ToastAlert from "../components/toasts/ToastAlert";
 import { useAuth } from "../context/AuthContext";
 import RoomContext from "../context/RoomContext";
@@ -29,7 +30,7 @@ const useCheckUserInRoomQuery = (roomId, roomName) => {
       retry: (failureCount, error) => {
         if (
           error instanceof AxiosError &&
-          [400, 401].includes(error.response?.status)
+          isClientErrorCode(error.response?.status)
         ) {
           return false;
         }
@@ -43,7 +44,7 @@ const useCheckUserInRoomQuery = (roomId, roomName) => {
       onError: (error) => {
         if (
           error instanceof AxiosError &&
-          [400, 401].includes(error.response?.status)
+          isClientErrorCode(error.response?.status)
         ) {
           toast.show({
             id: "user-in-room-error",

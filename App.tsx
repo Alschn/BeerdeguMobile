@@ -10,11 +10,11 @@ const queryClient = new QueryClient();
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthContextProvider>
-        <NativeBaseProvider theme={theme}>
+      <NativeBaseProvider theme={theme}>
+        <AuthContextProvider>
           <AppNavigation />
-        </NativeBaseProvider>
-      </AuthContextProvider>
+        </AuthContextProvider>
+      </NativeBaseProvider>
     </QueryClientProvider>
   );
 }

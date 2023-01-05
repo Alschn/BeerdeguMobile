@@ -1,3 +1,4 @@
+import axios from "axios";
 import AxiosClient from "./AxiosClient";
 import { Response } from "./types";
 
@@ -93,6 +94,14 @@ class AuthService {
     return AxiosClient.post(`/auth/password/reset/confirm/${uid}/${token}/`, {
       ...request_body,
     });
+  }
+
+  static refreshToken(
+    refresh: string,
+    headerless: boolean = false
+  ): Promise<Response<JWTLoginResponseData>> {
+    const httpClient = headerless ? axios : AxiosClient;
+    return httpClient.post("/auth/token/refresh/", { refresh });
   }
 }
 

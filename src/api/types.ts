@@ -27,14 +27,14 @@ export interface Room {
   id: number;
   name: string;
   has_password: boolean;
-  host: number;
+  host: User;
   slots: number;
   state: string;
   created_at: string;
   updated_at: string;
 }
 
-export interface RoomDetail extends Omit<Room, "host"> {
+export interface RoomDetail extends Room {
   host: User;
   users: User[];
   beers: Beer[];
@@ -76,15 +76,24 @@ export interface Rating {
 }
 
 export interface Hop {
-  // todo
+  id: number;
+  name: string;
+  country: string;
 }
 
 export interface BeerStyle {
-  // todo
+  id: number;
+  name: string;
+  description: string;
 }
 
 export interface Brewery {
-  // todo
+  id: number;
+  name: string;
+  city: string;
+  country: string;
+  established: string;
+  description: string;
 }
 
 // todo finish websocket types
