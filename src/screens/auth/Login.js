@@ -4,27 +4,28 @@ import {
   Center,
   FormControl,
   Input,
-  Icon,
   Pressable,
   Text,
   Button,
   useToast,
 } from "native-base";
-import { MaterialIcons } from "@expo/vector-icons";
+import ShowPasswordIcon from "../../components/icons/ShowPassword";
 import { useState } from "react";
 import AuthService from "../../api/auth";
 import { useAuth } from "../../context/AuthContext";
 import { AxiosError } from "axios";
 import { HTTP_400_BAD_REQUEST } from "../../api/utils/status";
+import { useTranslation } from "../../context/TranslationContext";
 
 const LoginScreen = () => {
+  const { t } = useTranslation();
+
   // todo validation
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const toast = useToast();
-
   const { completeLogin } = useAuth();
 
   const loginMutation = useMutation((data) => AuthService.login(data), {
@@ -33,8 +34,23 @@ const LoginScreen = () => {
       completeLogin(access, refresh);
     },
     onError: (err) => {
-      if (err instanceof AxiosError && err.response?.status === HTTP_400_BAD_REQUEST) {
-        // todo toast
+      if (
+        err instanceof AxiosError &&
+        err.response?.status === HTTP_400_BAD_REQUEST
+      ) {
+        toast.show({
+          duration: 2_000,
+          render: () => (
+            <ToastAlert
+              toast={toast}
+              status="error"
+              variant="subtle"
+              title={t("toasts.login.error_title")}
+              description={t("toasts.register.error_credentials")}
+              isClosable={false}
+            />
+          ),
+        });
       }
     },
   });
@@ -46,16 +62,16 @@ const LoginScreen = () => {
   return (
     <Center flex={1}>
       <Text fontSize="3xl" fontWeight="600" my={2}>
-        Sign in
+        {t("sign_in")}
       </Text>
 
       <Box w="100%" maxWidth="300px" mb={4}>
         <FormControl isRequired>
-          <FormControl.Label>Username</FormControl.Label>
+          <FormControl.Label>{t("username")}</FormControl.Label>
           <Input
             size="lg"
             type="text"
-            placeholder="Username"
+            placeholder={t("username")}
             keyboardType="default"
             value={username}
             onChangeText={(text) => setUsername(text)}
@@ -65,23 +81,14 @@ const LoginScreen = () => {
 
       <Box w="100%" maxWidth="300px" mb={4}>
         <FormControl isRequired>
-          <FormControl.Label>Password</FormControl.Label>
+          <FormControl.Label>{t("password")}</FormControl.Label>
           <Input
             size="lg"
             type={showPassword ? "text" : "password"}
-            placeholder="Password"
+            placeholder={t("password")}
             InputRightElement={
               <Pressable onPress={() => setShowPassword(!showPassword)}>
-                <Icon
-                  as={
-                    <MaterialIcons
-                      name={showPassword ? "visibility" : "visibility-off"}
-                    />
-                  }
-                  size={5}
-                  mr="2"
-                  color="muted.400"
-                />
+                <ShowPasswordIcon show={showPassword} />
               </Pressable>
             }
             value={password}
@@ -91,8 +98,12 @@ const LoginScreen = () => {
       </Box>
 
       <Box mt={4}>
-        <Button onPress={handleSubmit} color="#43bccd" size="md">
-          SIGN IN
+        <Button
+          onPress={handleSubmit}
+          size="md"
+          isLoading={loginMutation.isLoading}
+        >
+          {t("sign_in").toUpperCase()}
         </Button>
       </Box>
     </Center>

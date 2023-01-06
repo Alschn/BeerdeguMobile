@@ -1,10 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
+import { Button } from "native-base";
+import { useTranslation } from "../../context/TranslationContext";
 import Logo from "../../assets/Logo";
 
 const WelcomeScreen = () => {
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   useLayoutEffect(() => {
     // do not show header in welcome screen
@@ -23,20 +26,16 @@ const WelcomeScreen = () => {
       </View>
 
       <View style={styles.buttons}>
-        <View style={{ marginVertical: 12, width: 250 }}>
-          <Button
-            color={styles.buttonLogin.color}
-            title="Login"
-            onPress={() => navigation.navigate("Login")}
-          />
+        <View style={styles.buttonWrapper}>
+          <Button onPress={() => navigation.navigate("Login")}>
+            {t("login").toUpperCase()}
+          </Button>
         </View>
 
-        <View style={{ marginVertical: 12, width: 250 }}>
-          <Button
-            color={styles.buttonRegister.color}
-            title="Register"
-            onPress={() => navigation.navigate("Register")}
-          />
+        <View style={styles.buttonWrapper}>
+          <Button onPress={() => navigation.navigate("Register")}>
+            {t("register").toUpperCase()}
+          </Button>
         </View>
       </View>
     </View>
@@ -73,11 +72,9 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
   },
-  buttonLogin: {
-    color: "#43bccd",
-  },
-  buttonRegister: {
-    color: "#43bccd",
+  buttonWrapper: {
+    marginVertical: 12,
+    width: 250,
   },
 });
 
