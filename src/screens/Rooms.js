@@ -20,7 +20,13 @@ const RoomsScreen = () => {
   };
 
   if (isLoading)
-    return <Center flex={1}>{/* todo some kind of skeleton */}</Center>;
+    return (
+      <Center flex={1}>
+        {Array.from(Array(rowsCount)).map((_, index) => (
+          <Skeleton h={64} key={`room-skeleton-${index}`} />
+        ))}
+      </Center>
+    );
 
   return (
     <Center flex={1}>

@@ -9,7 +9,9 @@ import { isClientErrorCode } from "../api/utils/status";
 import ToastAlert from "../components/toasts/ToastAlert";
 import { useAuth } from "../context/AuthContext";
 import RoomContext from "../context/RoomContext";
+import { useTranslation } from "../context/TranslationContext";
 import { initialRoomState, roomReducer } from "./Room.types";
+import uuid from "react-native-uuid";
 
 // for later use
 const WS_USER_PING_INTERVAL_MS = 14_000;
@@ -19,6 +21,7 @@ const WS_TRY_RECONNECT_TIMES = 5;
 const HTTP_RETRY_TIMES = 3;
 
 const useCheckUserInRoomQuery = (roomId, roomName) => {
+  const { t } = useTranslation();
   const navigate = useNavigation();
   const toast = useToast();
   const { user } = useAuth(); // add this to query key
@@ -46,15 +49,16 @@ const useCheckUserInRoomQuery = (roomId, roomName) => {
           error instanceof AxiosError &&
           isClientErrorCode(error.response?.status)
         ) {
+          const toastId = uuid.v4();
           toast.show({
-            id: "user-in-room-error",
+            id: toastId,
             duration: 3_000,
             render: () => (
               <ToastAlert
+                id={toastId}
                 toast={toast}
-                id="user-in-room-error"
-                title="Error"
-                description="You are not in this room!"
+                title={t("toasts.room.error_title_generic")}
+                description={t("toasts.room.error_user_not_in")}
                 status="error"
                 variant="subtle"
               />
@@ -68,10 +72,9 @@ const useCheckUserInRoomQuery = (roomId, roomName) => {
   );
 };
 
-const RoomScreen = () => {
+const RoomScreen = ({ navigation }) => {
   const route = useRoute();
   const { roomId, roomName } = route.params;
-
   const [state, dispatch] = useReducer(roomReducer, initialRoomState);
 
   const {

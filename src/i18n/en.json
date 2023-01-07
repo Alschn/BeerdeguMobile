@@ -3,10 +3,28 @@
     "register": "Register",
     "sign_in": "Sign In",
     "sign_up": "Sign Up",
+    "sign_out": "Sign Out",
+    "logout": "Logout",
     "username": "Username",
     "password": "Password",
     "email": "Email",
     "confirm_password": "Confirm Password",
+    "change_password": "Change Password",
+    "old_password": "Old Password",
+    "new_password": "New Password",
+    "confirm_new_password": "Confirm New Password",
+    "submit": "Submit",
+    "join": "Join",
+    "join_room":"Join Room",
+    "create": "Create",
+    "create_room": "Create Room",
+    "room_name": "Room Name",
+    "room_name_create_helper": "Maximum 8 characters.",
+    "room_code": "Room Code",
+    "room_code_join_helper": "Leave blank if room is not password protected.",
+    "room_code_create_helper": "Maximum 20 characters. Leave blank if room is not password protected.",
+    "room_slots": "Slots",
+    "room_slots_helper": "Maximum 10 people.",
     "toasts": {
         "register": {
             "success_description": "Now you can login with your credentials",
@@ -19,6 +37,10 @@
             "success_title": "Success!",
             "error_credentials": "Invalid credentials",
             "error_title": "Error!"
+        },
+        "room": {
+            "error_title_generic": "Error!",
+            "error_user_not_in": "You are not in this room",
         }
     }
 }
