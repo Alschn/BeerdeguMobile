@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import RoomsService from "../api/rooms";
-import { View, FlatList, RefreshControl } from "react-native";
+import { FlatList, RefreshControl } from "react-native";
 import RoomItem from "../components/RoomItem";
-import { Center } from "native-base";
+import { Center, Skeleton, View } from "native-base";
 
 const RoomsScreen = () => {
   const [page, setPage] = useState(1);
@@ -22,7 +22,7 @@ const RoomsScreen = () => {
   if (isLoading)
     return (
       <Center flex={1}>
-        {Array.from(Array(rowsCount)).map((_, index) => (
+        {Array.from(Array(6)).map((_, index) => (
           <Skeleton h={64} key={`room-skeleton-${index}`} />
         ))}
       </Center>
