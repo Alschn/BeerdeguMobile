@@ -14,8 +14,8 @@ import { initialRoomState, roomReducer } from "./Room.types";
 import uuid from "react-native-uuid";
 
 // for later use
-const WS_USER_PING_INTERVAL_MS = 14_000;
-const WS_USERS_FETCH_INTERVAL_MS = 12_000;
+const WS_USER_PING_INTERVAL_MS = 14000;
+const WS_USERS_FETCH_INTERVAL_MS = 12000;
 const WS_TRY_RECONNECT_TIMES = 5;
 
 const HTTP_RETRY_TIMES = 3;
@@ -52,7 +52,7 @@ const useCheckUserInRoomQuery = (roomId, roomName) => {
           const toastId = uuid.v4();
           toast.show({
             id: toastId,
-            duration: 3_000,
+            duration: 3000,
             render: () => (
               <ToastAlert
                 id={toastId}

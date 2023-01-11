@@ -54,7 +54,7 @@ const RegisterScreen = () => {
         err.response?.status === HTTP_400_BAD_REQUEST
       ) {
         toast.show({
-          duration: 2_000,
+          duration: 2000,
           render: () => (
             <ToastAlert
               toast={toast}

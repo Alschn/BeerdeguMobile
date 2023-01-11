@@ -5,7 +5,7 @@ import * as SecureStore from "expo-secure-store";
 const axiosConfig: AxiosRequestConfig = {
   headers: { "Content-Type": "application/json" },
   baseURL: BASE_URL,
-  timeout: 10_000,
+  timeout: 10000,
 };
 
 const AxiosClient = axios.create(axiosConfig);
