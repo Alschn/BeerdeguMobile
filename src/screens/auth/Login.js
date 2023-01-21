@@ -14,29 +14,47 @@ import { useState } from "react";
 import AuthService from "../../api/auth";
 import { useAuth } from "../../context/AuthContext";
 import { AxiosError } from "axios";
-import { HTTP_400_BAD_REQUEST } from "../../api/utils/status";
+import {
+  HTTP_400_BAD_REQUEST,
+  HTTP_401_UNAUTHORIZED,
+} from "../../api/utils/status";
 import { useTranslation } from "../../context/TranslationContext";
+import ToastAlert from "../../components/toasts/ToastAlert";
 
 const LoginScreen = () => {
+  const { completeLogin } = useAuth();
   const { t } = useTranslation();
+  const toast = useToast();
 
   // todo validation
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const toast = useToast();
-  const { completeLogin } = useAuth();
-
   const loginMutation = useMutation((data) => AuthService.login(data), {
     onSuccess: (res) => {
       const [access, refresh] = [res.data.access, res.data.refresh];
       completeLogin(access, refresh);
+      toast.show({
+        duration: 3000,
+        render: () => (
+          <ToastAlert
+            toast={toast}
+            status="success"
+            variant="subtle"
+            title={t("toasts.login.success_title")}
+            description={t("toasts.login.success_description")}
+            isClosable={false}
+          />
+        ),
+      });
     },
     onError: (err) => {
       if (
         err instanceof AxiosError &&
-        err.response?.status === HTTP_400_BAD_REQUEST
+        [HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED].includes(
+          err.response?.status
+        )
       ) {
         toast.show({
           duration: 2000,
@@ -46,7 +64,7 @@ const LoginScreen = () => {
               status="error"
               variant="subtle"
               title={t("toasts.login.error_title")}
-              description={t("toasts.register.error_credentials")}
+              description={t("toasts.login.error_credentials")}
               isClosable={false}
             />
           ),

@@ -7,14 +7,19 @@ import {
   FormControl,
   Input,
   Pressable,
+  useToast,
 } from "native-base";
 import { useState } from "react";
 import AuthService from "../api/auth";
 import ShowPasswordIcon from "../components/icons/ShowPassword";
 import { useTranslation } from "../context/TranslationContext";
+import { useNavigation } from "@react-navigation/native";
+import ToastAlert from "../components/toasts/ToastAlert";
 
 const PasswordChangeScreen = () => {
   const { t } = useTranslation();
+  const toast = useToast();
+  const navigation = useNavigation();
 
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword1, setNewPassword1] = useState("");
@@ -25,10 +30,40 @@ const PasswordChangeScreen = () => {
 
   const mutation = useMutation((data) => AuthService.changePassword(data), {
     onSuccess: (res) => {
-      // todo toast, redirect home
+      toast.show({
+        duration: 3000,
+        render: () => (
+          <ToastAlert
+            toast={toast}
+            status="success"
+            variant="subtle"
+            title={t("toasts.password_change.success_title")}
+            description={t("toasts.password_change.success_description")}
+            isClosable={false}
+          />
+        ),
+      });
+      navigation.navigate("Home");
     },
     onError: (err) => {
-      // todo toast
+      if (
+        err instanceof AxiosError &&
+        err.response?.status === HTTP_400_BAD_REQUEST
+      ) {
+        toast.show({
+          duration: 3000,
+          render: () => (
+            <ToastAlert
+              toast={toast}
+              status="error"
+              variant="subtle"
+              title={t("toasts.password_change.error_title")}
+              description={t("toasts.password_change.error_credentials")}
+              isClosable={false}
+            />
+          ),
+        });
+      }
     },
   });
 
@@ -102,7 +137,7 @@ const PasswordChangeScreen = () => {
 
       <Box mt={4}>
         <Button onPress={handleSubmit} size="md" isLoading={mutation.isLoading}>
-          {t("submit")}
+          {t("submit").toUpperCase()}
         </Button>
       </Box>
     </Center>

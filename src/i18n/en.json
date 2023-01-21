@@ -40,7 +40,13 @@
         },
         "room": {
             "error_title_generic": "Error!",
-            "error_user_not_in": "You are not in this room",
+            "error_user_not_in": "You are not in this room"
+        },
+        "password_change": {
+            "success_description": "Successfully changed password",
+            "success_title": "Success!",
+            "error_credentials": "Invalid credentials",
+            "error_title": "Error!"
         }
     }
 }
