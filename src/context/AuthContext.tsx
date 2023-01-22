@@ -16,6 +16,7 @@ import { Center, Spinner } from "native-base";
 type NullableUser = User | null;
 
 interface AuthContextValues {
+  token: string | null;
   isAuthenticated: boolean;
   user: NullableUser;
   completeLogin: (access: string, refresh: string) => void;
@@ -153,6 +154,7 @@ const AuthContextProvider: FC<AuthContextProviderProps> = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
+        token,
         isAuthenticated: !!user,
         user,
         completeLogin,

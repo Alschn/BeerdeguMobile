@@ -1,4 +1,4 @@
-import AxiosClient from "./axiosClient";
+import AxiosClient from "./AxiosClient";
 import { PaginatedResponse, Beer } from "./types";
 
 class BeerService {
