@@ -19,6 +19,7 @@ Beerdegu is a real-time mobile application meant for beer tasting sessions, when
 - `axios` - http requests client
 - `@tanstack/react-query` - client-side data fetching and caching
 - `react-native-use-websocket` - websocket client
+- `react-use-form`, `@hookform/resolvers`, `zod` - form state and validation
 
 ## Development setup
 
