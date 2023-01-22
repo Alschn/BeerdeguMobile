@@ -20,15 +20,36 @@ import {
 } from "../../api/utils/status";
 import { useTranslation } from "../../context/TranslationContext";
 import ToastAlert from "../../components/toasts/ToastAlert";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+const translatedSchema = (t) =>
+  z.object({
+    username: z.string().min(1, {
+      message: t("validation.required"),
+    }),
+    password: z.string().min(1, {
+      message: t("validation.required"),
+    }),
+  });
 
 const LoginScreen = () => {
   const { completeLogin } = useAuth();
   const { t } = useTranslation();
   const toast = useToast();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+    resolver: zodResolver(translatedSchema(t)),
+  });
 
-  // todo validation
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const loginMutation = useMutation((data) => AuthService.login(data), {
@@ -73,8 +94,8 @@ const LoginScreen = () => {
     },
   });
 
-  const handleSubmit = (e) => {
-    loginMutation.mutate({ username, password });
+  const onSubmit = (data) => {
+    loginMutation.mutate({ ...data });
   };
 
   return (
@@ -84,40 +105,60 @@ const LoginScreen = () => {
       </Text>
 
       <Box w="100%" maxWidth="300px" mb={4}>
-        <FormControl isRequired>
+        <FormControl isRequired isInvalid={!!errors.username}>
           <FormControl.Label>{t("username")}</FormControl.Label>
-          <Input
-            size="lg"
-            type="text"
-            placeholder={t("username")}
-            keyboardType="default"
-            value={username}
-            onChangeText={(text) => setUsername(text)}
+          <Controller
+            name="username"
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                size="lg"
+                type="text"
+                placeholder={t("username")}
+                keyboardType="default"
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+              />
+            )}
           />
+          <FormControl.ErrorMessage>
+            {errors.username?.message}
+          </FormControl.ErrorMessage>
         </FormControl>
       </Box>
 
       <Box w="100%" maxWidth="300px" mb={4}>
-        <FormControl isRequired>
+        <FormControl isRequired isInvalid={!!errors.password}>
           <FormControl.Label>{t("password")}</FormControl.Label>
-          <Input
-            size="lg"
-            type={showPassword ? "text" : "password"}
-            placeholder={t("password")}
-            InputRightElement={
-              <Pressable onPress={() => setShowPassword(!showPassword)}>
-                <ShowPasswordIcon show={showPassword} />
-              </Pressable>
-            }
-            value={password}
-            onChangeText={(text) => setPassword(text)}
+          <Controller
+            name="password"
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                size="lg"
+                type={showPassword ? "text" : "password"}
+                placeholder={t("password")}
+                InputRightElement={
+                  <Pressable onPress={() => setShowPassword(!showPassword)}>
+                    <ShowPasswordIcon show={showPassword} />
+                  </Pressable>
+                }
+                value={value}
+                onChangeText={onChange}
+                onBlur={onBlur}
+              />
+            )}
           />
+          <FormControl.ErrorMessage>
+            {errors.password?.message}
+          </FormControl.ErrorMessage>
         </FormControl>
       </Box>
 
       <Box mt={4}>
         <Button
-          onPress={handleSubmit}
+          onPress={handleSubmit(onSubmit)}
           size="md"
           isLoading={loginMutation.isLoading}
         >
