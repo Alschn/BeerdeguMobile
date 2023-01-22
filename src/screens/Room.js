@@ -1,7 +1,7 @@
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { Center, Text, useToast } from "native-base";
+import { Center, HStack, Text, useToast } from "native-base";
 import { useEffect, useLayoutEffect, useReducer, useState } from "react";
 import { ActivityIndicator } from "react-native";
 import RoomsService from "../api/rooms";
@@ -20,6 +20,7 @@ import Starting from "../components/room/Starting";
 import InProgress from "../components/room/InProgress";
 import Finished from "../components/room/Finished";
 import ActionsMenu from "../components/room/ActionsMenu";
+import UsersMenu from "../components/room/UsersMenu";
 
 const WS_USER_PING_INTERVAL_MS = 14000;
 const WS_USERS_FETCH_INTERVAL_MS = 12000;
@@ -183,13 +184,17 @@ const RoomScreen = ({ navigation, drawerNavigation }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <ActionsMenu
-          code={roomName}
-          isHost={isHost}
-          sendMessage={sendJsonMessage}
-          roomState={state.roomState}
-          wsState={connectionStatus}
-        />
+        <HStack space={3}>
+          <UsersMenu users={state.users} />
+
+          <ActionsMenu
+            code={roomName}
+            isHost={isHost}
+            sendMessage={sendJsonMessage}
+            roomState={state.roomState}
+            wsState={connectionStatus}
+          />
+        </HStack>
       ),
     });
 
@@ -198,7 +203,14 @@ const RoomScreen = ({ navigation, drawerNavigation }) => {
         headerRight: () => null,
       });
     };
-  }, [roomName, isHost, sendJsonMessage, connectionStatus, state.roomState]);
+  }, [
+    roomName,
+    isHost,
+    sendJsonMessage,
+    connectionStatus,
+    state.roomState,
+    state.users,
+  ]);
 
   if (isCheckingUserInRoom) {
     return (
