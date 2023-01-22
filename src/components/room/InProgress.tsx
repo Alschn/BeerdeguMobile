@@ -17,6 +17,7 @@ import {
   Card,
   Select,
   TextArea,
+  Box,
 } from "native-base";
 import { useRoomContext } from "../../context/RoomContext";
 import { Beer, UserRating } from "../../api/types";
@@ -111,7 +112,21 @@ const BeerStep: FC<BeerStepProps> = ({ beer, index, activeStep }) => {
 
   return (
     <ScrollView w={width}>
-      <Card px={8}>
+      <Box
+        mx={4}
+        px={8}
+        pb={4}
+        rounded="lg"
+        borderColor="coolGray.200"
+        borderWidth="1"
+        _dark={{
+          borderColor: "coolGray.600",
+          backgroundColor: "gray.700",
+        }}
+        _light={{
+          backgroundColor: "gray.50",
+        }}
+      >
         <Center mb={1}>
           <Image
             source={{ uri: beer.image || undefined }}
@@ -203,7 +218,7 @@ const BeerStep: FC<BeerStepProps> = ({ beer, index, activeStep }) => {
             </Select>
           </FormControl>
         </View>
-      </Card>
+      </Box>
     </ScrollView>
   );
 };
@@ -219,6 +234,13 @@ const InProgress: FC = () => {
     setActiveStep(viewableItems[0].index);
   }, []);
 
+  const renderItem = useCallback(
+    ({ item, index }: { item: Beer; index: number }) => {
+      return <BeerStep beer={item} index={index} activeStep={activeStep} />;
+    },
+    [beers, activeStep]
+  );
+
   return (
     <Center flex={1} py={2}>
       <View mb={2}>
@@ -227,9 +249,7 @@ const InProgress: FC = () => {
 
       <FlatList
         data={beers}
-        renderItem={({ item, index }) => (
-          <BeerStep beer={item} index={index} activeStep={activeStep} />
-        )}
+        renderItem={renderItem}
         keyExtractor={(item) => `step-${item.id}`}
         horizontal
         pagingEnabled
