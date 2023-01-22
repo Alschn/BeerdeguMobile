@@ -26,7 +26,7 @@ import { WS_BASE_URL } from "../../config";
 import useWebsocket from "react-native-use-websocket";
 import { useAuth } from "../../context/AuthContext";
 
-const FORM_SAVE_INTERVAL_MS = 5_000;
+const FORM_SAVE_INTERVAL_MS = 5000;
 
 interface State extends Omit<UserRating, "note"> {
   note: string | number;

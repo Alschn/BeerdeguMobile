@@ -25,7 +25,7 @@ const HostView: FC = () => {
   } = useRoomContext();
 
   const [query, setQuery] = useState<string>("");
-  const debouncedQuery = useDebounce(query, 1_000);
+  const debouncedQuery = useDebounce(query, 1000);
 
   const {
     isFetching: isFetchingBeers,
