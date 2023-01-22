@@ -1,4 +1,5 @@
 import { AxiosResponse } from "axios";
+import { ReadyState } from "react-native-use-websocket";
 
 // axios types:
 
@@ -23,13 +24,22 @@ export interface User {
   email: string;
 }
 
+export const RoomState = {
+  WAITING: "WAITING",
+  STARTING: "STARTING",
+  IN_PROGRESS: "IN_PROGRESS",
+  FINISHED: "FINISHED",
+} as const;
+
+export type RoomStateType = typeof RoomState[keyof typeof RoomState];
+
 export interface Room {
   id: number;
   name: string;
   has_password: boolean;
   host: User;
   slots: number;
-  state: string;
+  state: RoomStateType;
   created_at: string;
   updated_at: string;
 }
@@ -120,3 +130,11 @@ export interface ChatMessage {
   message: string;
   user: string;
 }
+
+export const WebsocketStatus = {
+  [ReadyState.CONNECTING]: "Connecting",
+  [ReadyState.OPEN]: "Open",
+  [ReadyState.CLOSING]: "Closing",
+  [ReadyState.CLOSED]: "Closed",
+  [ReadyState.UNINSTANTIATED]: "Uninstantiated",
+};

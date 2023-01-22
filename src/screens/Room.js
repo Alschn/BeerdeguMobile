@@ -2,7 +2,7 @@ import { useRoute, useNavigation } from "@react-navigation/native";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Center, Text, useToast } from "native-base";
-import { useReducer } from "react";
+import { useEffect, useLayoutEffect, useReducer, useState } from "react";
 import { ActivityIndicator } from "react-native";
 import RoomsService from "../api/rooms";
 import { isClientErrorCode } from "../api/utils/status";
@@ -12,22 +12,28 @@ import RoomContext from "../context/RoomContext";
 import { useTranslation } from "../context/TranslationContext";
 import { initialRoomState, roomReducer } from "./Room.types";
 import uuid from "react-native-uuid";
+import useWebsocket from "react-native-use-websocket";
+import { RoomState, WebsocketStatus } from "../api/types";
+import { WS_BASE_URL } from "../config";
+import Waiting from "../components/room/Waiting";
+import Starting from "../components/room/Starting";
+import InProgress from "../components/room/InProgress";
+import Finished from "../components/room/Finished";
+import ActionsMenu from "../components/room/ActionsMenu";
 
-// for later use
 const WS_USER_PING_INTERVAL_MS = 14000;
 const WS_USERS_FETCH_INTERVAL_MS = 12000;
 const WS_TRY_RECONNECT_TIMES = 5;
-
 const HTTP_RETRY_TIMES = 3;
 
 const useCheckUserInRoomQuery = (roomId, roomName) => {
   const { t } = useTranslation();
   const navigate = useNavigation();
   const toast = useToast();
-  const { user } = useAuth(); // add this to query key
+  const { user } = useAuth();
 
   return useQuery(
-    ["rooms", { roomId, roomName }, "in"],
+    ["rooms", { roomId, roomName }, user, "in"],
     ({ queryKey }) => RoomsService.checkUserInRoom(queryKey[1].roomName),
     {
       retry: (failureCount, error) => {
@@ -72,10 +78,22 @@ const useCheckUserInRoomQuery = (roomId, roomName) => {
   );
 };
 
-const RoomScreen = ({ navigation }) => {
+const RoomScreen = ({ navigation, drawerNavigation }) => {
   const route = useRoute();
   const { roomId, roomName } = route.params;
-  const [state, dispatch] = useReducer(roomReducer, initialRoomState);
+  const { token } = useAuth();
+
+  useLayoutEffect(() => {
+    drawerNavigation.setOptions({
+      headerShown: false,
+    });
+    // set previous state on unmount
+    return () => {
+      drawerNavigation.setOptions({
+        headerShown: true,
+      });
+    };
+  }, []);
 
   const {
     isLoading: isCheckingUserInRoom,
@@ -91,8 +109,96 @@ const RoomScreen = ({ navigation }) => {
     ({ queryKey }) => RoomsService.getRoom(queryKey[1].roomName),
     {
       enabled: userInRoomSuccess,
+      onSuccess: (res) => setShouldConnect(true),
+      onError: (error) => setShouldConnect(false),
     }
   );
+
+  const [shouldConnect, setShouldConnect] = useState(false);
+  const [state, dispatch] = useReducer(roomReducer, initialRoomState);
+
+  const { sendJsonMessage, readyState } = useWebsocket(
+    `${WS_BASE_URL}/room/${roomName}/`,
+    {
+      queryParams: {
+        token: token,
+      },
+      onOpen: () => console.log("Websocket opened"),
+      onClose: () => console.log("Websocket closed"),
+      onMessage: (event) => {
+        const parsed = JSON.parse(event.data);
+        const { command, data } = parsed;
+        dispatch({
+          type: command,
+          payload: data,
+        });
+      },
+      shouldReconnect: (closeEvent) => true,
+      reconnectAttempts: WS_TRY_RECONNECT_TIMES,
+      shared: true,
+    },
+    shouldConnect
+  );
+
+  const connectionStatus = WebsocketStatus[readyState];
+
+  useEffect(() => {
+    // users ping server to show that they are active
+    const pingInterval = setInterval(() => {
+      sendJsonMessage({
+        command: "user_active",
+      });
+    }, WS_USER_PING_INTERVAL_MS);
+    return () => clearInterval(pingInterval);
+  }, [sendJsonMessage]);
+
+  useEffect(() => {
+    // check if users in room changed
+    const interval = setInterval(() => {
+      sendJsonMessage({
+        command: "get_users",
+      });
+    }, WS_USERS_FETCH_INTERVAL_MS);
+    return () => clearInterval(interval);
+  }, [sendJsonMessage]);
+
+  useEffect(() => {
+    // sync beers when room is in progress
+    if (state.roomState === "IN_PROGRESS") {
+      sendJsonMessage({
+        command: "load_beers",
+      });
+    }
+    // load final ratings
+    else if (state.roomState === "FINISHED") {
+      sendJsonMessage({
+        command: "get_user_ratings",
+      });
+      sendJsonMessage({
+        command: "get_final_ratings",
+      });
+    }
+  }, [state.roomState, sendJsonMessage]);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <ActionsMenu
+          code={roomName}
+          isHost={isHost}
+          sendMessage={sendJsonMessage}
+          roomState={state.roomState}
+          wsState={connectionStatus}
+        />
+      ),
+    });
+
+    return () => {
+      navigation.setOptions({
+        headerRight: () => null,
+      });
+    };
+  }, [roomName, isHost, sendJsonMessage, connectionStatus, state.roomState]);
 
   if (isCheckingUserInRoom) {
     return (
@@ -119,13 +225,18 @@ const RoomScreen = ({ navigation }) => {
   return (
     <RoomContext.Provider
       value={{
-        // todo add state and dispatch over here
+        code: roomName,
         isHost,
+        wsState: connectionStatus,
+        sendMessage: sendJsonMessage,
+        dispatch,
+        state,
       }}
     >
-      <Center flex={1}>
-        <Text>Room screen {roomId}</Text>
-      </Center>
+      {state.roomState === RoomState.WAITING && <Waiting />}
+      {state.roomState === RoomState.STARTING && <Starting />}
+      {state.roomState === RoomState.IN_PROGRESS && <InProgress />}
+      {state.roomState === RoomState.FINISHED && <Finished />}
     </RoomContext.Provider>
   );
 };

@@ -4,7 +4,7 @@ import RoomsTabs from "./RoomsTabs";
 
 const Stack = createNativeStackNavigator();
 
-const RoomStack = () => {
+const RoomStack = ({ navigation }) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -14,7 +14,9 @@ const RoomStack = () => {
           headerShown: false,
         }}
       />
-      <Stack.Screen name="Room" component={RoomScreen} />
+      <Stack.Screen name="Room">
+        {(props) => <RoomScreen {...props} drawerNavigation={navigation} />}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 };
