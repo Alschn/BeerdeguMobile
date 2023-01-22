@@ -33,7 +33,7 @@ class RoomsService {
     return AxiosClient.get(`/rooms/${roomName}/`);
   }
 
-  static joinRoom(roomName: string, password: string): Promise<Response<any>> {
+  static joinRoom(roomName: string, password: string): Promise<Response<Room>> {
     return AxiosClient.put(`/rooms/${roomName}/join/`, {
       password: password,
     });

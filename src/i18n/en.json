@@ -47,12 +47,25 @@
             "success_title": "Success!",
             "error_credentials": "Invalid credentials",
             "error_title": "Error!"
+        },
+        "room_join": {
+            "success_description": "Successfully joined room",
+            "success_title": "Success!",
+            "error_title": "Error!",
+            "error_room_not_found": "Room not found",
+            "error_generic": "Failed to join room. Make sure you have entered the correct data."
+        },
+        "room_create": {
+            "success_description": "Successfully created room. Redirecting to room...",
+            "success_title": "Success!",
+            "error_title": "Error!",
+            "error_generic": "Failed to create room. Make sure you have entered the correct data."
         }
     },
     "validation": {
         "required": "This field is required",
-        "min": "This field must be at least {min} characters",
-        "max": "This field must be at most {max} characters",
+        "min": "This field must be at least %{min} characters",
+        "max": "This field must be at most %{max} characters",
         "email": "This field must be a valid email",
         "password_match": "Passwords must match"
     }
