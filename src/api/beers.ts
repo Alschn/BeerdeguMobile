@@ -18,6 +18,16 @@ class BeerService {
       `/beers/?search=${query}&page_size=${page_size}&page=${page}`
     );
   }
+
+  static getBeersByQueryFilters(
+    query: string,
+    page: number = 1,
+    page_size: number = 10
+  ): Promise<PaginatedResponse<BeerDetailed>> {
+    return AxiosClient.get(
+      `/beers/?${query}&page_size=${page_size}&page=${page}`
+    );
+  }
 }
 
 export default BeerService;
