@@ -44,7 +44,13 @@ const UsersMenu: FC<UsersMenuProps> = ({ users }) => {
     >
       <Menu.Group title={`Users (${users.length}):`}>
         {users.map((user) => (
-          <Menu.Item key={`user-menu-item-${user.id}`} isDisabled p={0} w={150}>
+          <Menu.Item
+            key={`user-menu-item-${user.id}`}
+            isDisabled
+            p={0}
+            w={150}
+            mb={2}
+          >
             <View flexDir="row" textAlign="center" alignItems="center">
               <Avatar size="sm" mr={2}>
                 {user.username.slice(0, 1)}

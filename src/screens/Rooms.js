@@ -1,19 +1,42 @@
-import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import RoomsService from "../api/rooms";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { FlatList, RefreshControl } from "react-native";
-import RoomItem from "../components/RoomItem";
-import { Center, Skeleton, View } from "native-base";
+import { Skeleton, View, VStack } from "native-base";
+import RoomItem from "../components/cards/RoomItem";
+import RoomsService from "../api/rooms";
 
 const RoomsScreen = () => {
-  const [page, setPage] = useState(1);
-  const { isLoading, isError, data, refetch, isRefetching } = useQuery(
-    ["rooms", { page }],
-    ({ queryKey }) => RoomsService.getRooms(queryKey[1].page)
+  const {
+    isLoading,
+    isError,
+    data,
+    refetch,
+    isRefetching,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery(
+    ["rooms"],
+    ({ pageParam = 1 }) => RoomsService.getRooms(pageParam),
+    {
+      getNextPageParam: (lastPage) => {
+        if (lastPage.data.next !== null) {
+          return lastPage.data.next.split("page=").pop();
+        }
+        return undefined;
+      },
+    }
   );
 
-  const pageData = data?.data;
-  const rooms = pageData?.results || [];
+  const rooms = useMemo(() => {
+    if (!data || !data.pages) return [];
+    return data.pages.map((page) => page.data.results).flat();
+  }, [data]);
+
+  const loadMore = () => {
+    if (hasNextPage) {
+      fetchNextPage();
+    }
+  };
 
   const renderItem = ({ item }) => {
     return <RoomItem room={item} />;
@@ -21,27 +44,29 @@ const RoomsScreen = () => {
 
   if (isLoading)
     return (
-      <Center flex={1}>
-        {Array.from(Array(6)).map((_, index) => (
-          <Skeleton h={64} key={`room-skeleton-${index}`} />
-        ))}
-      </Center>
+      <View w="100%" px={4} my={4}>
+        <VStack space={2}>
+          {Array.from(Array(6)).map((_, index) => (
+            <Skeleton h={32} key={`room-skeleton-${index}`} mb={2} />
+          ))}
+        </VStack>
+      </View>
     );
 
   return (
-    <Center flex={1}>
-      <View>
-        <FlatList
-          data={rooms}
-          keyExtractor={(item) => item.id}
-          renderItem={renderItem}
-          numColumns={1}
-          refreshControl={
-            <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
-          }
-        />
-      </View>
-    </Center>
+    <View w="100%" px={4} my={4}>
+      <FlatList
+        data={rooms}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItem}
+        numColumns={1}
+        refreshControl={
+          <RefreshControl refreshing={isRefetching} onRefresh={refetch} />
+        }
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.5}
+      />
+    </View>
   );
 };
 

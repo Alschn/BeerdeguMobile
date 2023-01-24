@@ -4,10 +4,10 @@ import { Icon } from "native-base";
 import { FC } from "react";
 
 interface ShowPasswordIconProps
-  extends Omit<IconProps<string>, "color" | "children"> {
+  extends Omit<IconProps<string>, "color" | "children" | "name"> {
   show: boolean;
   variant?: unknown;
-  colorScheme: any;
+  colorScheme?: any;
 }
 
 const ShowPasswordIcon: FC<ShowPasswordIconProps> = ({ show, ...rest }) => {

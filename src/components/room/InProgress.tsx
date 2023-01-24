@@ -101,14 +101,14 @@ const BeerStep: FC<BeerStepProps> = ({ beer, index, activeStep }) => {
     });
   };
 
-  useEffect(() => {
-    // load current form
-    console.debug("get_form_data", beer.id);
-    sendJsonMessage({
-      command: "get_form_data",
-      data: beer.id,
-    });
-  }, [beer.id]);
+  // useEffect(() => {
+  //   // load current form
+  //   console.debug("get_form_data", beer.id);
+  //   sendJsonMessage({
+  //     command: "get_form_data",
+  //     data: beer.id,
+  //   });
+  // }, [beer.id]);
 
   return (
     <ScrollView w={width}>

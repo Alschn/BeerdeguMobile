@@ -4,17 +4,23 @@ import {
   Center,
   View,
   Text,
-  FlatList,
   Input,
   ScrollView,
-  Pressable,
   Icon,
+  Box,
+  VStack,
+  Spinner,
+  Button,
 } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import BeerService from "../../api/beers";
 import useDebounce from "../../hooks/useDebounce";
 import RoomsService from "../../api/rooms";
+import BeerApiItem from "../cards/BeerApiItem";
+import BeerListItem from "../cards/BeerListItem";
+
+const BEER_API_PAGE_SIZE = 5;
 
 const HostView: FC = () => {
   const {
@@ -28,15 +34,17 @@ const HostView: FC = () => {
   const debouncedQuery = useDebounce(query, 1000);
 
   const {
+    isLoading: isLoadingBeers,
     isFetching: isFetchingBeers,
     isSuccess: isSuccessBeers,
     data: beersData,
     hasNextPage: hasNextPageBeers,
     fetchNextPage: fetchNextPageBeers,
+    isFetchingNextPage: isFetchingNextPageBeers,
   } = useInfiniteQuery(
     ["beers", debouncedQuery],
     ({ pageParam = 1, queryKey }) =>
-      BeerService.getBeersByQuery(queryKey[1], pageParam),
+      BeerService.getBeersByQuery(queryKey[1], pageParam, BEER_API_PAGE_SIZE),
     {
       enabled: isHost,
       refetchOnWindowFocus: false,
@@ -75,8 +83,18 @@ const HostView: FC = () => {
   };
 
   return (
-    <View px={4} py={2}>
-      <View mb={2}>
+    <View px={2} py={2}>
+      <Box
+        mb={2}
+        _dark={{
+          borderColor: "coolGray.600",
+          backgroundColor: "gray.700",
+        }}
+        _light={{
+          borderColor: "coolGray.200",
+          backgroundColor: "gray.50",
+        }}
+      >
         <Input
           size="lg"
           placeholder="Search for a beer..."
@@ -91,27 +109,44 @@ const HostView: FC = () => {
               as={<MaterialIcons name="search" />}
             />
           }
+          InputRightElement={isFetchingBeers ? <Spinner mr={2} /> : undefined}
         />
-      </View>
+      </Box>
 
       <ScrollView mb={2}>
-        {results.map((beer) => (
-          <View key={`beer-search-${beer.id}`} mb={2}>
-            {beers.find((b) => b.id === beer.id) ? (
-              <View p={2} bgColor="blue.100">
-                <Text>{beer.name}</Text>
-              </View>
-            ) : (
-              <Pressable
-                onPress={() => addBeer(beer.id)}
-                bgColor="green.100"
-                p={2}
-              >
-                <Text>{beer.name}</Text>
-              </Pressable>
-            )}
-          </View>
-        ))}
+        {isLoadingBeers && (
+          <Center flex={1}>
+            <Spinner />
+          </Center>
+        )}
+        <VStack space={2} mb={2}>
+          {results.map((beer) => {
+            const isAdded = !!beers.find((b) => b.id === beer.id);
+            return (
+              <BeerApiItem
+                key={`beer-${beer.id}`}
+                beer={beer}
+                isAdded={isAdded}
+                onRemove={removeBeer}
+                onAdd={addBeer}
+              />
+            );
+          })}
+        </VStack>
+        {isFetchingNextPageBeers && (
+          <Text textAlign="center" mb={2}>
+            Loading more...
+          </Text>
+        )}
+        {hasNextPageBeers && (
+          <Button
+            size="sm"
+            isLoading={isFetchingBeers}
+            onPress={() => fetchNextPageBeers()}
+          >
+            Load more...
+          </Button>
+        )}
       </ScrollView>
 
       <Text fontSize="2xl" mb={2}>
@@ -119,17 +154,15 @@ const HostView: FC = () => {
       </Text>
 
       <ScrollView>
-        {beers.map((beer) => (
-          <View key={`beer-in-room-${beer.id}`} mb={2}>
-            <Pressable
-              onPress={() => removeBeer(beer.id)}
-              bgColor="blue.100"
-              p={2}
-            >
-              <Text>{beer.name}</Text>
-            </Pressable>
-          </View>
-        ))}
+        <VStack space={2}>
+          {beers.map((beer) => (
+            <BeerListItem
+              key={`beer-${beer.id}`}
+              beer={beer}
+              onRemove={removeBeer}
+            />
+          ))}
+        </VStack>
       </ScrollView>
     </View>
   );
@@ -141,14 +174,16 @@ const ParticipantView: FC = () => {
   } = useRoomContext();
 
   return (
-    <View px={4}>
-      <Text>🍺 Beers in room:</Text>
+    <View px={2} py={2}>
+      <Text fontSize="2xl" mb={2}>
+        🍺 Beers in room:
+      </Text>
       <ScrollView>
-        {beers.map((beer) => (
-          <View key={`beer-in-room-${beer.id}`} mb={2}>
-            <Text>{beer.name}</Text>
-          </View>
-        ))}
+        <VStack space={2}>
+          {beers.map((beer) => (
+            <BeerListItem key={`beer-${beer.id}`} beer={beer} />
+          ))}
+        </VStack>
       </ScrollView>
     </View>
   );
