@@ -100,9 +100,9 @@ const ActionsMenu: FC<ActionsMenuProps> = ({
           </Menu.Item>
 
           {
-            (roomState !== RoomState.FINISHED && (
+            (roomState !== RoomState.WAITING && (
               <Menu.Item onPress={() => loadBeers()} mb={1}>
-                Load / Refresh beers
+                Refresh beers
               </Menu.Item>
             )) as JSX.Element
           }

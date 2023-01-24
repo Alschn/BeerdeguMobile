@@ -173,6 +173,9 @@ const RoomScreen = ({ navigation, drawerNavigation }) => {
     // load final ratings
     else if (state.roomState === "FINISHED") {
       sendJsonMessage({
+        command: "load_beers",
+      });
+      sendJsonMessage({
         command: "get_user_ratings",
       });
       sendJsonMessage({
