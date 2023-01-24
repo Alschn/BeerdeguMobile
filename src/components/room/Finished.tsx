@@ -13,6 +13,22 @@ import {
 import { useRoomContext } from "../../context/RoomContext";
 import { useTranslation } from "../../context/TranslationContext";
 
+const getRatingColor = (
+  average_rating: string | number,
+  min_rating: number,
+  max_rating: number
+) => {
+  if (!average_rating) return "orange.600";
+  const avg = Number(average_rating);
+  if (avg === min_rating) {
+    return "red.500";
+  }
+  if (avg === max_rating) {
+    return "green.500";
+  }
+  return "black";
+};
+
 const Finished: FC = () => {
   const { t } = useTranslation();
   const {
@@ -21,27 +37,32 @@ const Finished: FC = () => {
   } = useRoomContext();
 
   const [minRating, maxRating] = useMemo(() => {
-    const ratings = results.map(({ average_rating }) => average_rating);
+    // all non empty ratings
+    const ratings = results
+      .map(({ average_rating }) => average_rating)
+      .filter(Boolean);
     return [Math.min(...ratings), Math.max(...ratings)] as const;
   }, [results]);
 
   const highestRated = useMemo(() => {
     return beers.find(
       (beer) =>
-        beer.name ===
+        beer.id ===
         results.find(
-          ({ average_rating }) => Number(average_rating) === maxRating
-        )?.beer.name
+          ({ average_rating }) =>
+            Number(average_rating) === maxRating && maxRating
+        )?.beer.id
     );
   }, [beers, results, maxRating]);
 
   const lowestRated = useMemo(() => {
     return beers.find(
       (beer) =>
-        beer.name ===
+        beer.id ===
         results.find(
-          ({ average_rating }) => Number(average_rating) === minRating
-        )?.beer.name
+          ({ average_rating }) =>
+            Number(average_rating) === minRating && minRating
+        )?.beer.id
     );
   }, [beers, results, minRating]);
 
@@ -88,7 +109,7 @@ const Finished: FC = () => {
 
             <View mb={2}>
               <Text fontSize="2xl">{highestRated.name}</Text>
-              <Text fontSize="sm">{highestRated.description}</Text>
+              <Text fontSize="xs">{highestRated.description}</Text>
             </View>
           </Box>
         </View>
@@ -159,8 +180,11 @@ const Finished: FC = () => {
               <Text mb={1}>
                 {t("room.beer_style_short")}: {beer.style}
               </Text>
-              <Text textAlign="right">
-                {t("room.average_rating")}: {average_rating}
+              <Text
+                textAlign="right"
+                color={getRatingColor(average_rating, minRating, maxRating)}
+              >
+                {t("room.average_rating")}: {average_rating || "N/A"}
               </Text>
             </Card>
           ))}
