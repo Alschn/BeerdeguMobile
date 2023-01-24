@@ -19,6 +19,7 @@ import useDebounce from "../../hooks/useDebounce";
 import RoomsService from "../../api/rooms";
 import BeerApiItem from "../cards/BeerApiItem";
 import BeerListItem from "../cards/BeerListItem";
+import SearchInput from "../inputs/SearchInput";
 
 const BEER_API_PAGE_SIZE = 5;
 
@@ -95,21 +96,11 @@ const HostView: FC = () => {
           backgroundColor: "gray.50",
         }}
       >
-        <Input
-          size="lg"
+        <SearchInput
+          query={query}
+          setQuery={setQuery}
+          isLoading={isFetchingBeers}
           placeholder="Search for a beer..."
-          value={query}
-          onChangeText={setQuery}
-          InputLeftElement={
-            <Icon
-              m="2"
-              ml="3"
-              size="6"
-              color="gray.400"
-              as={<MaterialIcons name="search" />}
-            />
-          }
-          InputRightElement={isFetchingBeers ? <Spinner mr={2} /> : undefined}
         />
       </Box>
 
