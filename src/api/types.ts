@@ -42,6 +42,7 @@ export interface Room {
   state: RoomStateType;
   created_at: string;
   updated_at: string;
+  users_count: number;
 }
 
 export interface RoomDetail extends Room {

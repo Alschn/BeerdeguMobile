@@ -25,8 +25,8 @@ interface RemoveBeerData {
 }
 
 class RoomsService {
-  static getRooms(): Promise<PaginatedResponse<Room>> {
-    return AxiosClient.get("/rooms/");
+  static getRooms(page: number = 1): Promise<PaginatedResponse<Room>> {
+    return AxiosClient.get(`/rooms/?page=${page}`);
   }
 
   static getRoom(roomName: string): Promise<Response<Room>> {
