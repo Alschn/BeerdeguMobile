@@ -3,13 +3,15 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 import { SafeAreaView } from "react-native";
-import { View, Text, Button } from "native-base";
+import { View, Text, Button, Radio } from "native-base";
 import HomeScreen from "../screens/Home";
 import ProfileTabs from "./ProfileTabs";
 import RoomStack from "./RoomStack";
 import Logo from "../assets/Logo";
 import { useAuth } from "../context/AuthContext";
 import BrowserScreen from "../screens/Browser";
+import { useTranslation } from "../context/TranslationContext";
+import CountryFlag from "react-native-country-flag";
 
 const Drawer = createDrawerNavigator();
 
@@ -46,6 +48,7 @@ const screens = [
 
 const DrawerNavigation = () => {
   const { completeLogout } = useAuth();
+  const { t, locale, setLocale } = useTranslation();
 
   return (
     <Drawer.Navigator
@@ -67,6 +70,22 @@ const DrawerNavigation = () => {
           </View>
           <View flex={1}>
             <DrawerItemList {...props} />
+          </View>
+          <View m={2} mb={6}>
+            <Radio.Group
+              name="locale"
+              value={locale}
+              onChange={(nextValue) => setLocale(nextValue)}
+            >
+              <Radio value="en" mb={2}>
+                <CountryFlag isoCode="gb" size={25} />
+                English
+              </Radio>
+              <Radio value="pl">
+                <CountryFlag isoCode="pl" size={25} />
+                Polski
+              </Radio>
+            </Radio.Group>
           </View>
           <View m={2}>
             <Button onPress={() => completeLogout()}>Logout</Button>
