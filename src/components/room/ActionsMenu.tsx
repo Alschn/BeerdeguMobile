@@ -107,10 +107,12 @@ const ActionsMenu: FC<ActionsMenuProps> = ({
             )) as JSX.Element
           }
 
+          <Divider />
+
           {
             (roomState === RoomState.WAITING && (
               <Menu.Item
-                onPress={() => changeRoomState(RoomState.IN_PROGRESS)}
+                onPress={() => changeRoomState(RoomState.STARTING)}
                 mb={1}
               >
                 Continue to beers browser
@@ -121,6 +123,13 @@ const ActionsMenu: FC<ActionsMenuProps> = ({
           {
             (roomState === RoomState.STARTING && (
               <>
+                <Menu.Item
+                  onPress={() => changeRoomState(RoomState.WAITING)}
+                  mb={1}
+                >
+                  Back to waiting
+                </Menu.Item>
+
                 <Menu.Item
                   onPress={() => changeRoomState(RoomState.IN_PROGRESS)}
                   mb={1}

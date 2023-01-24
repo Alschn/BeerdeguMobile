@@ -1,8 +1,8 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { FlatList, RefreshControl } from "react-native";
-import { Center, Skeleton, View, VStack } from "native-base";
-import RoomItem from "../components/RoomItem";
+import { Skeleton, View, VStack } from "native-base";
+import RoomItem from "../components/cards/RoomItem";
 import RoomsService from "../api/rooms";
 
 const RoomsScreen = () => {

@@ -10,9 +10,9 @@ import {
 } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
 import { FC } from "react";
-import { Room } from "../api/types";
-import { useTranslation } from "../context/TranslationContext";
-import RoomJoinModal from "./modals/RoomJoinModal";
+import { Room } from "../../api/types";
+import { useTranslation } from "../../context/TranslationContext";
+import RoomJoinModal from "../modals/RoomJoinModal";
 
 interface RoomItemProps {
   room: Room;

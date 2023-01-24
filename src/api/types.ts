@@ -66,7 +66,23 @@ export interface Beer {
   hops: number[];
 }
 
+export interface BeerDetailed {
+  id: number;
+  name: string;
+  percentage: number;
+  volume_ml: number;
+  extract: Nullable<number>;
+  IBU: Nullable<number>;
+  hop_rate: Nullable<number>;
+  image: Nullable<string>;
+  description: string;
+  brewery: Brewery;
+  style: BeerStyle;
+  hops: Hop[];
+}
+
 export interface BeerSimplified {
+  id: number;
   name: string;
   brewery: string;
   style: string;
