@@ -140,6 +140,12 @@ const PasswordChangeScreen = () => {
           {t("submit").toUpperCase()}
         </Button>
       </Box>
+
+      <Box mt={4}>
+        <Button onPress={() => navigation.navigate("Settings")}>
+                  {t("back")}
+        </Button>
+      </Box>
     </Center>
   );
 };

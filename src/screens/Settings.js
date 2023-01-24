@@ -1,6 +1,7 @@
-import { Button, Center, Text } from "native-base";
+import { Button, Center, Text, View } from "native-base";
 import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "../context/TranslationContext";
+import packageData from '../../package.json';
 
 const SettingsScreen = () => {
   const { t } = useTranslation();
@@ -8,9 +9,13 @@ const SettingsScreen = () => {
 
   return (
     <Center flex={1}>
-      <Text>Settings screen</Text>
-      <Button onPress={() => navigate.navigate("PasswordChange")}>
+      <Text style={{height: "30%"}} >Settings screen</Text>
+      <Button style={{width: "40%"}} onPress={() => navigate.navigate("PasswordChange")}>
         {t("change_password")}
+      </Button>
+      <View style={{height: "10%"}}></View>
+      <Button style={{ width: "40%", textAllign: "center"}} disabled={true}>
+        {t("app_version")} {packageData.version}
       </Button>
     </Center>
   );
