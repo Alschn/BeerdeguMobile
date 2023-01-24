@@ -1,3 +1,76 @@
 {
-
+  "login": "Logowanie",
+  "register": "Rejestracja",
+  "sign_in": "Zaloguj siê",
+  "sign_up": "Za³ó¿ konto",
+  "sign_out": "Wyloguj siê",
+  "logout": "Wylogowanie",
+  "username": "Nazwa u¿ytkownika",
+  "password": "Has³o",
+  "email": "Email",
+  "confirm_password": "PotwierdŸ has³o",
+  "change_password": "Zmieñ has³o",
+  "old_password": "Stare has³o",
+  "new_password": "Nowe has³o",
+  "confirm_new_password": "PotwierdŸ nowe has³o",
+  "submit": "ZatwierdŸ",
+  "back": "Cofnij",
+  "welcome_back": "Witaj z powrotem,",
+  "cheers": "Na zdrowie!",
+  "app_version":  "Wersja programu: ",
+  "join": "Do³¹cz",
+  "join_room": "Do³¹cz do pokoju",
+  "create": "Stwórz",
+  "create_room": "Stwórz pokój",
+  "room_name": "Nazwa pokoju",
+  "room_name_create_helper": "Maksymalnie 8 znaków",
+  "room_code": "Kod pokoju",
+  "room_code_join_helper": "Pozostaw puste, je¿eli pokój nie jest chroniony has³em",
+  "room_code_create_helper": "Maksymalnie 20 znaków. Pozostaw puste, je¿eli pokój nie jest chroniony has³em.",
+  "room_slots": "Miejsca",
+  "room_slots_helper": "Maksymalnie 10 osób.",
+  "toasts": {
+    "register": {
+      "success_description": "Teraz mo¿esz zalogowaæ siê swowimi danymi",
+      "success_title": "Sukces!",
+      "error_generic": "Niepoprawne dane",
+      "error_title": "B³¹d!"
+    },
+    "login": {
+      "success_description": "Jesteœ zalogowany",
+      "success_title": "Sukces!",
+      "error_credentials": "B³êdne dane logowania",
+      "error_title": "B³¹d!"
+    },
+    "room": {
+      "error_title_generic": "B³¹d!",
+      "error_user_not_in": "Nie nale¿ysz do tego pokoju"
+    },
+    "password_change": {
+      "success_description": "Has³o zosta³o zmienione",
+      "success_title": "Sukces!",
+      "error_credentials": "B³êdne dane logowania",
+      "error_title": "B³¹d!"
+    },
+    "room_join": {
+      "success_description": "Do³¹czy³eœ do pokoju",
+      "success_title": "Sukces!",
+      "error_title": "B³¹d!",
+      "error_room_not_found": "Nie znaleziono pokoju",
+      "error_generic": "Nie uda³o siê do³¹czyæ do pokoju. Upewnij siê, ¿e poda³eœ poprawne dane."
+    },
+    "room_create": {
+      "success_description": "Utworzy³eœ pokój. Przekierowywanie do pokoju...",
+      "success_title": "Sukces!",
+      "error_title": "B³¹d!",
+      "error_generic": "Nie uda³o siê utworzyæ pokoju. Upewnij siê, ¿e poda³eœ poprawne dane."
+    }
+  },
+  "validation": {
+    "required": "To pole jest wymagane",
+    "min": "To pole musi mieæ co najmniej %{min} znaków",
+    "max": "To pole musi mieæ co najwy¿ej %{max} znaków",
+    "email": "To pole musi zawieraæ poprawny adres email",
+    "password_match": "Has³a musz¹ byæ takie same"
+  }
 }
