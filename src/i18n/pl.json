@@ -31,6 +31,22 @@
   "room_code_create_helper": "Maksymalnie 20 znaków. Pozostaw puste, jeżeli pokój nie jest chroniony hasłem.",
   "room_slots": "Miejsca",
   "room_slots_helper": "Maksymalnie 10 osób.",
+  "search_for_beer": "Szukaj piwa",
+  "screens": {
+    "home": "Strona główna",
+    "login": "Logowanie",
+    "register": "Rejestracja",
+    "welcome": "Strona powitalna",
+    "rooms": "Pokoje",
+    "room": "Pokój",
+    "browser": "Wyszukiwarka",
+    "profile": "Profil",
+    "statistics": "Statystyki",
+    "settings": "Ustawienia",
+    "join": "Dołącz",
+    "create": "Stwórz",
+    "password_change": "Zmiana hasła"
+  },
   "toasts": {
     "register": {
       "success_description": "Teraz możesz zalogować się swowimi danymi",

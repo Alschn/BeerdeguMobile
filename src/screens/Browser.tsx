@@ -198,7 +198,7 @@ const BrowserScreen: FC = () => {
           query={query}
           setQuery={setQuery}
           isLoading={isFetchingBeers}
-          placeholder={t("search_for_beer")}
+          placeholder={t("search_for_beer") + "..."}
         />
       </Box>
 

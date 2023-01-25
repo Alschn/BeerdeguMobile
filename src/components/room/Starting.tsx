@@ -102,7 +102,7 @@ const HostView: FC = () => {
           query={query}
           setQuery={setQuery}
           isLoading={isFetchingBeers}
-          placeholder="Search for a beer..."
+          placeholder={t("search_for_beer") + "..."}
         />
       </Box>
 
