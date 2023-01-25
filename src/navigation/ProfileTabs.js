@@ -24,7 +24,7 @@ const ProfileTabs = () => {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Statistics"
         component={StatisticsScreen}
         options={({ route }) => ({
@@ -38,7 +38,7 @@ const ProfileTabs = () => {
             />
           ),
         })}
-      />
+      /> */}
       <Tab.Screen
         name="SettingsStack"
         component={SettingsStack}

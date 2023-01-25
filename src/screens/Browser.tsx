@@ -19,6 +19,7 @@ import SearchInput from "../components/inputs/SearchInput";
 import { BeerDetailed } from "../api/types";
 import { RefreshControl } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useTranslation } from "../context/TranslationContext";
 
 const BEER_API_PAGE_SIZE = 10;
 
@@ -135,6 +136,7 @@ const BeerItem: FC<BeerItemProps> = ({ item }) => {
 };
 
 const BrowserScreen: FC = () => {
+  const { t } = useTranslation();
   const [query, setQuery] = useState<string>("");
   const debouncedQuery = useDebounce(query, 1000);
 
@@ -196,13 +198,15 @@ const BrowserScreen: FC = () => {
           query={query}
           setQuery={setQuery}
           isLoading={isFetchingBeers}
-          placeholder="Search for a beer..."
+          placeholder={t("search_for_beer")}
         />
       </Box>
 
-      <Center mb={2} flex={1}>
-        {isLoadingBeers && <Spinner />}
-      </Center>
+      {isLoadingBeers && (
+        <Center my={2} flex={1}>
+          <Spinner />
+        </Center>
+      )}
 
       <FlatList
         data={beers}
