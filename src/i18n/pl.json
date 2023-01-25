@@ -49,7 +49,7 @@
   },
   "toasts": {
     "register": {
-      "success_description": "Teraz możesz zalogować się swowimi danymi",
+      "success_description": "Teraz możesz zalogować się swoimi danymi",
       "success_title": "Sukces!",
       "error_generic": "Niepoprawne dane",
       "error_title": "Błąd!"
