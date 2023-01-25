@@ -76,6 +76,8 @@
         "your_ratings": "Your Ratings",
         "session_ended": "Session has ended!",
         "session_ended_thanks": "Thank you for participating!",
+        "highest_rated_beer": "Highest Rated Beer",
+        "lowest_rated_beer": "Lowest Rated Beer",
         "menu": {
             "host_actions": "Host Actions",
             "end_session": "End Session",
@@ -89,7 +91,6 @@
             "resume_session": "Resume Session",
             "get_ratings_and_statistics": "Get Ratings and Statistics"
         }
-
     },
     "toasts": {
         "register": {

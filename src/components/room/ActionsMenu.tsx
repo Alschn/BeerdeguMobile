@@ -164,7 +164,7 @@ const ActionsMenu: FC<ActionsMenuProps> = ({
                   onPress={() => changeRoomState(RoomState.IN_PROGRESS)}
                   mb={1}
                 >
-                  {t("room.menu_resume_session")}
+                  {t("room.menu.resume_session")}
                 </Menu.Item>
 
                 <Menu.Item onPress={() => getRatingsAndStatistics()} mb={1}>
