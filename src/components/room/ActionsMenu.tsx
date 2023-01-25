@@ -78,10 +78,7 @@ const ActionsMenu: FC<ActionsMenuProps> = ({
     <Menu
       trigger={(triggerProps) => {
         return (
-          <Pressable
-            accessibilityLabel="More room options menu"
-            {...triggerProps}
-          >
+          <Pressable accessibilityLabel="More actions menu" {...triggerProps}>
             <HamburgerIcon />
           </Pressable>
         );
@@ -96,13 +93,13 @@ const ActionsMenu: FC<ActionsMenuProps> = ({
       {isHost && (
         <Menu.Group title="Host actions">
           <Menu.Item onPress={() => getRoomState()} mb={1}>
-            Refresh room info
+            {t("room.menu.refresh_room_info")}
           </Menu.Item>
 
           {
             (roomState !== RoomState.WAITING && (
               <Menu.Item onPress={() => loadBeers()} mb={1}>
-                Refresh beers
+                {t("room.menu.refresh_beers")}
               </Menu.Item>
             )) as JSX.Element
           }
@@ -115,7 +112,7 @@ const ActionsMenu: FC<ActionsMenuProps> = ({
                 onPress={() => changeRoomState(RoomState.STARTING)}
                 mb={1}
               >
-                Continue to beers browser
+                {t("room.menu.continue_to_beers")}
               </Menu.Item>
             )) as JSX.Element
           }
@@ -127,14 +124,14 @@ const ActionsMenu: FC<ActionsMenuProps> = ({
                   onPress={() => changeRoomState(RoomState.WAITING)}
                   mb={1}
                 >
-                  Back to waiting
+                  {t("room.menu.back_to_waiting")}
                 </Menu.Item>
 
                 <Menu.Item
                   onPress={() => changeRoomState(RoomState.IN_PROGRESS)}
                   mb={1}
                 >
-                  Start session
+                  {t("room.menu.start_session")}
                 </Menu.Item>
               </>
             )) as JSX.Element
@@ -147,14 +144,14 @@ const ActionsMenu: FC<ActionsMenuProps> = ({
                   onPress={() => changeRoomState(RoomState.STARTING)}
                   mb={1}
                 >
-                  Back to beers browser
+                  {t("room.menu.back_to_beers")}
                 </Menu.Item>
 
                 <Menu.Item
                   onPress={() => changeRoomState(RoomState.FINISHED)}
                   mb={1}
                 >
-                  Finish session
+                  {t("room.menu.end_session")}
                 </Menu.Item>
               </>
             )) as JSX.Element
@@ -167,11 +164,11 @@ const ActionsMenu: FC<ActionsMenuProps> = ({
                   onPress={() => changeRoomState(RoomState.IN_PROGRESS)}
                   mb={1}
                 >
-                  Resume session
+                  {t("room.menu_resume_session")}
                 </Menu.Item>
 
                 <Menu.Item onPress={() => getRatingsAndStatistics()} mb={1}>
-                  Get ratings and statistics
+                  {t("room.menu.get_ratings_and_statistics")}
                 </Menu.Item>
               </>
             )) as JSX.Element
@@ -181,7 +178,7 @@ const ActionsMenu: FC<ActionsMenuProps> = ({
 
       <Menu.Group title="Room actions">
         <Menu.Item onPress={() => handleLeaveRoom()} mb={1}>
-          Leave room
+          {t("room.menu.leave_room")}
         </Menu.Item>
       </Menu.Group>
     </Menu>

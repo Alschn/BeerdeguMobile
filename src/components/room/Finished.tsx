@@ -80,7 +80,7 @@ const Finished: FC = () => {
       {highestRated && (
         <View mb={4}>
           <Center mb={4}>
-            <Text fontSize="2xl">Highest rated beer:</Text>
+            <Text fontSize="2xl">{t("room.highest_rated_beer")}:</Text>
           </Center>
 
           <Box
@@ -118,7 +118,7 @@ const Finished: FC = () => {
       {lowestRated && (
         <View mb={4}>
           <Center mb={4}>
-            <Text fontSize="2xl">Lowest rated beer:</Text>
+            <Text fontSize="2xl">{t("room.lowest_rated_beer")}:</Text>
           </Center>
 
           <Box
@@ -184,7 +184,7 @@ const Finished: FC = () => {
                 textAlign="right"
                 color={getRatingColor(average_rating, minRating, maxRating)}
               >
-                {t("room.average_rating")}: {average_rating || "N/A"}
+                {t("room.average_rating")}: {average_rating || t("n/a")}
               </Text>
             </Card>
           ))}

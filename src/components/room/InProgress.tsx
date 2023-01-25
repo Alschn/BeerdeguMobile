@@ -227,6 +227,7 @@ const InProgress: FC = () => {
   const {
     state: { beers },
   } = useRoomContext();
+  const { t } = useTranslation();
 
   const [activeStep, setActiveStep] = useState<number>(0);
 
@@ -244,7 +245,7 @@ const InProgress: FC = () => {
   return (
     <Center flex={1} py={2}>
       <View mb={2}>
-        <Text fontSize="2xl">State: IN_PROGRESS</Text>
+        <Text fontSize="2xl">{t("room_state")}: IN_PROGRESS</Text>
       </View>
 
       <FlatList

@@ -9,16 +9,18 @@ import {
   VStack,
 } from "native-base";
 import { useRoomContext } from "../../context/RoomContext";
+import { useTranslation } from "../../context/TranslationContext";
 
 const Waiting = () => {
   const {
     state: { users },
   } = useRoomContext();
+  const { t } = useTranslation();
 
   return (
     <Center flex={1}>
       <View mb={2}>
-        <Text fontSize="3xl">State: WAITING</Text>
+        <Text fontSize="3xl">{t("room_state")}: WAITING</Text>
       </View>
 
       <View mb={4}>

@@ -1,10 +1,13 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { useTranslation } from "../context/TranslationContext";
 import PasswordChangeScreen from "../screens/PasswordChange";
 import SettingsScreen from "../screens/Settings";
 
 const Stack = createNativeStackNavigator();
 
 const SettingsStack = () => {
+  const { t } = useTranslation();
+
   return (
     <Stack.Navigator
       screenOptions={{
@@ -16,7 +19,7 @@ const SettingsStack = () => {
         name="PasswordChange"
         component={PasswordChangeScreen}
         options={{
-          title: "Change Password",
+          title: t("screens.password_change"),
         }}
       />
     </Stack.Navigator>

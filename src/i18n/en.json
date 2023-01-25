@@ -38,6 +38,24 @@
     "beer_name": "Beer Name",
     "beer_style": "Beer Style",
     "number": "Number",
+    "n/a": "N/A",
+    "loading_more": "Loading more",
+    "load_more": "Load more",
+    "screens": {
+        "home": "Home",
+        "login": "Login",
+        "register": "Register",
+        "welcome": "Welcome",
+        "rooms": "Rooms",
+        "room": "Room",
+        "browser": "Browser",
+        "profile": "Profile",
+        "statistics": "Statistics",
+        "settings": "Settings",
+        "join": "Join",
+        "create": "Create",
+        "password_change": "Change Password",
+    },
     "room": {
         "beer_name_short": "Name",
         "beer_style_short": "Style",
@@ -57,7 +75,21 @@
         "beer_ratings": "Beer Ratings",
         "your_ratings": "Your Ratings",
         "session_ended": "Session has ended!",
-        "session_ended_thanks": "Thank you for participating!"
+        "session_ended_thanks": "Thank you for participating!",
+        "menu": {
+            "host_actions": "Host Actions",
+            "end_session": "End Session",
+            "leave_room": "Leave Room",
+            "refresh_room_info": "Refresh Room Info",
+            "refresh_beers": "Refresh Beers",
+            "continue_to_beers": "Continue to Beers",
+            "back_to_beers": "Back to Beers",
+            "back_to_waiting": "Back to Waiting",
+            "start_session": "Start Session",
+            "resume_session": "Resume Session",
+            "get_ratings_and_statistics": "Get Ratings and Statistics"
+        }
+
     },
     "toasts": {
         "register": {

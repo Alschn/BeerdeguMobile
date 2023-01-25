@@ -11,10 +11,7 @@ const UsersMenu: FC<UsersMenuProps> = ({ users }) => {
   return (
     <Menu
       trigger={(triggerProps) => (
-        <Pressable
-          accessibilityLabel="More room options menu"
-          {...triggerProps}
-        >
+        <Pressable accessibilityLabel="Users menu" {...triggerProps}>
           <View
             position="absolute"
             top={-6}

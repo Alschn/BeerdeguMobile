@@ -20,6 +20,7 @@ import RoomsService from "../../api/rooms";
 import BeerApiItem from "../cards/BeerApiItem";
 import BeerListItem from "../cards/BeerListItem";
 import SearchInput from "../inputs/SearchInput";
+import { useTranslation } from "../../context/TranslationContext";
 
 const BEER_API_PAGE_SIZE = 5;
 
@@ -30,6 +31,7 @@ const HostView: FC = () => {
     code,
     isHost,
   } = useRoomContext();
+  const { t } = useTranslation();
 
   const [query, setQuery] = useState<string>("");
   const debouncedQuery = useDebounce(query, 1000);
@@ -126,7 +128,7 @@ const HostView: FC = () => {
         </VStack>
         {isFetchingNextPageBeers && (
           <Text textAlign="center" mb={2}>
-            Loading more...
+            {t("loading_more")}...
           </Text>
         )}
         {hasNextPageBeers && (
@@ -135,7 +137,7 @@ const HostView: FC = () => {
             isLoading={isFetchingBeers}
             onPress={() => fetchNextPageBeers()}
           >
-            Load more...
+            {t("load_more")}...
           </Button>
         )}
       </ScrollView>

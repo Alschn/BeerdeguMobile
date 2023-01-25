@@ -4,10 +4,13 @@ import { Ionicons } from "@expo/vector-icons";
 import RoomCreateScreen from "../screens/RoomCreate";
 import RoomJoinScreen from "../screens/RoomJoin";
 import RoomsScreen from "../screens/Rooms";
+import { useTranslation } from "../context/TranslationContext";
 
 const Tab = createBottomTabNavigator();
 
 const RoomsTabs = () => {
+  const { t } = useTranslation();
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -18,7 +21,7 @@ const RoomsTabs = () => {
         name="Rooms"
         component={RoomsScreen}
         options={{
-          title: "Rooms",
+          title: t("screens.rooms"),
           tabBarIcon: ({ color, size }) => (
             <Icon
               as={<Ionicons name="beer-outline" />}
@@ -32,7 +35,7 @@ const RoomsTabs = () => {
         name="RoomJoin"
         component={RoomJoinScreen}
         options={{
-          title: "Join",
+          title: t("screens.join"),
           tabBarIcon: ({ color, size }) => (
             <Icon
               as={<Ionicons name="enter-outline" />}
@@ -46,7 +49,7 @@ const RoomsTabs = () => {
         name="RoomCreate"
         component={RoomCreateScreen}
         options={{
-          title: "Create",
+          title: t("screens.create"),
           tabBarIcon: ({ color, size }) => (
             <Icon
               as={<Ionicons name="create-outline" />}

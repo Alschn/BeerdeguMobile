@@ -4,17 +4,20 @@ import ProfileScreen from "../screens/Profile";
 import StatisticsScreen from "../screens/Statistics";
 import SettingsStack from "./SettingsStack";
 import { Ionicons } from "@expo/vector-icons";
+import { useTranslation } from "../context/TranslationContext";
 
 const Tab = createBottomTabNavigator();
 
 const ProfileTabs = () => {
+  const { t } = useTranslation();
+
   return (
     <Tab.Navigator>
       <Tab.Screen
         name="Profile"
         component={ProfileScreen}
         options={{
-          title: "Profile",
+          title: t("screens.profile"),
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Icon as={<Ionicons name="person" />} size={size} color={color} />
@@ -25,7 +28,7 @@ const ProfileTabs = () => {
         name="Statistics"
         component={StatisticsScreen}
         options={({ route }) => ({
-          title: "Statistics",
+          title: t("screens.statistics"),
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Icon
@@ -40,7 +43,7 @@ const ProfileTabs = () => {
         name="SettingsStack"
         component={SettingsStack}
         options={({ route }) => ({
-          title: "Settings",
+          title: t("screens.settings"),
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <Icon as={<Ionicons name="settings" />} size={size} color={color} />

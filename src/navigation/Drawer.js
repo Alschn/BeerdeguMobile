@@ -15,12 +15,12 @@ import CountryFlag from "react-native-country-flag";
 
 const Drawer = createDrawerNavigator();
 
-const screens = [
+const screens = (t) => [
   {
     name: "Home",
     component: HomeScreen,
     options: {
-      title: "Home",
+      title: t("screens.home"),
       headerShown: true,
     },
   },
@@ -28,20 +28,20 @@ const screens = [
     name: "Browser",
     component: BrowserScreen,
     options: {
-      title: "Browser",
+      title: t("screens.browser"),
       headerShown: true,
     },
   },
   {
     name: "RoomsStack",
     component: RoomStack,
-    options: { title: "Rooms" },
+    options: { title: t("screens.rooms") },
   },
   {
     name: "ProfileTabs",
     component: ProfileTabs,
     options: {
-      title: "Profile",
+      title: t("screens.profile"),
     },
   },
 ];
@@ -88,12 +88,12 @@ const DrawerNavigation = () => {
             </Radio.Group>
           </View>
           <View m={2}>
-            <Button onPress={() => completeLogout()}>Logout</Button>
+            <Button onPress={() => completeLogout()}>{t("logout")}</Button>
           </View>
         </SafeAreaView>
       )}
     >
-      {screens.map((screen, index) => (
+      {screens(t).map((screen, index) => (
         <Drawer.Screen
           key={`screen${index}-${screen.name}`}
           name={screen.name}
