@@ -1,28 +1,16 @@
-import {
-  FC,
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-} from "react";
+import { FC, useEffect, useMemo, useReducer, useState } from "react";
 import {
   Center,
   View,
   Text,
-  FlatList,
   Image,
   FormControl,
   ScrollView,
-  Card,
   Select,
   TextArea,
   Box,
   Button,
   Icon,
-  Spacer,
-  AlertDialog,
   Spinner,
   Modal,
 } from "native-base";
@@ -35,7 +23,7 @@ import useWebsocket from "react-native-use-websocket";
 import { useAuth } from "../../context/AuthContext";
 import { AntDesign } from "@expo/vector-icons";
 
-const FORM_SAVE_INTERVAL_MS = 5000;
+const WS_FORM_SAVE_INTERVAL_MS = 5000;
 
 interface State extends Omit<UserRating, "note"> {
   note: string | number;
@@ -121,20 +109,20 @@ const BeerStep: FC<BeerStepProps> = ({ beer, shouldAutoSave }) => {
     });
   };
 
-  // useEffect(() => {
-  //   if (!shouldAutoSave) return;
-  //   console.debug(
-  //     `user_form_save - ${beer.id} - sending to server (forced save)`
-  //   );
-  //   console.debug({ ...state, beer_id: beer.id });
-  //   sendJsonMessage({
-  //     command: "user_form_save",
-  //     data: {
-  //       beer_id: beer.id,
-  //       ...state,
-  //     },
-  //   });
-  // }, [shouldAutoSave, state, beer.id]);
+  useEffect(() => {
+    if (!shouldAutoSave) return;
+    console.debug(
+      `user_form_save - ${beer.id} - sending to server (forced save)`
+    );
+    console.debug({ ...state, beer_id: beer.id });
+    sendJsonMessage({
+      command: "user_form_save",
+      data: {
+        beer_id: beer.id,
+        ...state,
+      },
+    });
+  }, [shouldAutoSave, state, beer.id]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -146,7 +134,7 @@ const BeerStep: FC<BeerStepProps> = ({ beer, shouldAutoSave }) => {
           ...state,
         },
       });
-    }, FORM_SAVE_INTERVAL_MS);
+    }, WS_FORM_SAVE_INTERVAL_MS);
     return () => clearInterval(interval);
   }, [state, beer.id]);
 
@@ -281,25 +269,19 @@ const InProgress: FC = () => {
   const maxSteps = beers.length;
 
   const handleNext = (): void => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    // setForceAutoSave(true);
-    // setTimeout(() => {
-    //   setForceAutoSave(false);
-    // }, 1000);
-    // setTimeout(() => {
-    //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    // }, 1200);
+    setForceAutoSave(true);
+    setTimeout(() => {
+      setForceAutoSave(false);
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }, 1000);
   };
 
   const handleBack = (): void => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    // setForceAutoSave(true);
-    // setTimeout(() => {
-    //   setForceAutoSave(false);
-    // }, 1000);
-    // setTimeout(() => {
-    //   setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    // }, 1200);
+    setForceAutoSave(true);
+    setTimeout(() => {
+      setForceAutoSave(false);
+      setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    }, 1000);
   };
 
   const activeBeer = useMemo(() => {
@@ -314,35 +296,45 @@ const InProgress: FC = () => {
         <Text fontSize="2xl">{t("room_state")}: IN_PROGRESS</Text>
       </View>
 
-      <Button.Group mb={2} px={4}>
-        <Button
-          isDisabled={activeStep === 0}
-          leftIcon={<Icon as={AntDesign} name="left" />}
-          onPress={handleBack}
-          size="sm"
-        >
-          {t("room.previous")}
-        </Button>
+      {beers.length > 0 && (
+        <Button.Group mb={2} px={4}>
+          <Button
+            isDisabled={activeStep === 0}
+            leftIcon={<Icon as={AntDesign} name="left" />}
+            onPress={handleBack}
+            size="sm"
+          >
+            {t("room.previous")}
+          </Button>
 
-        <Center flex={1}>
-          <Text textAlign="center" fontWeight="600">
-            {activeStep + 1} / {maxSteps}
-          </Text>
-        </Center>
+          <Center flex={1}>
+            <Text textAlign="center" fontWeight="600">
+              {activeStep + 1} / {maxSteps}
+            </Text>
+          </Center>
 
-        <Button
-          isDisabled={activeStep === maxSteps - 1}
-          rightIcon={<Icon as={AntDesign} name="right" />}
-          onPress={handleNext}
-          size="sm"
-        >
-          {t("room.next")}
-        </Button>
-      </Button.Group>
-
-      {!!activeBeer && (
-        <BeerStep beer={activeBeer} shouldAutoSave={forceAutoSave} />
+          <Button
+            isDisabled={activeStep === maxSteps - 1}
+            rightIcon={<Icon as={AntDesign} name="right" />}
+            onPress={handleNext}
+            size="sm"
+          >
+            {t("room.next")}
+          </Button>
+        </Button.Group>
       )}
+
+      {beers.map((beer) => {
+        if (activeBeer && beer.id === activeBeer.id)
+          return (
+            <BeerStep
+              beer={activeBeer}
+              shouldAutoSave={forceAutoSave}
+              key={`beer-step-${beer.id}`}
+            />
+          );
+        return null;
+      })}
     </Center>
   );
 };
