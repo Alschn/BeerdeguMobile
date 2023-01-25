@@ -1,78 +1,78 @@
 {
   "login": "Logowanie",
   "register": "Rejestracja",
-  "sign_in": "Zaloguj siê",
-  "sign_up": "Za³ó¿ konto",
-  "sign_out": "Wyloguj siê",
+  "sign_in": "Zaloguj siÄ™",
+  "sign_up": "ZaÅ‚Ã³Å¼ konto",
+  "sign_out": "Wyloguj siÄ™",
   "logout": "Wylogowanie",
-  "username": "Nazwa u¿ytkownika",
-  "password": "Has³o",
+  "username": "Nazwa uÅ¼ytkownika",
+  "password": "HasÅ‚o",
   "email": "Email",
-  "confirm_password": "PotwierdŸ has³o",
-  "change_password": "Zmieñ has³o",
-  "old_password": "Stare has³o",
-  "new_password": "Nowe has³o",
-  "confirm_new_password": "PotwierdŸ nowe has³o",
-  "submit": "ZatwierdŸ",
+  "confirm_password": "PotwierdÅº hasÅ‚o",
+  "change_password": "ZmieÅ„ hasÅ‚o",
+  "old_password": "Stare hasÅ‚o",
+  "new_password": "Nowe hasÅ‚o",
+  "confirm_new_password": "PotwierdÅº nowe hasÅ‚o",
+  "submit": "ZatwierdÅº",
   "back": "Cofnij",
   "welcome_back": "Witaj z powrotem,",
   "cheers": "Na zdrowie!",
   "app_version": "Wersja programu: ",
-  "send_feeback": "Podziel siê swoj¹ opini¹ o Beerdegu",
+  "send_feeback": "Podziel siÄ™ swojÄ… opiniÄ… o Beerdegu",
   "start_degusting": "Rozpocznij degustowanie!",
-  "join": "Do³¹cz",
-  "join_room": "Do³¹cz do pokoju",
-  "create": "Stwórz",
-  "create_room": "Stwórz pokój",
+  "join": "DoÅ‚Ä…cz",
+  "join_room": "DoÅ‚Ä…cz do pokoju",
+  "create": "StwÃ³rz",
+  "create_room": "StwÃ³rz pokÃ³j",
   "room_name": "Nazwa pokoju",
-  "room_name_create_helper": "Maksymalnie 8 znaków",
+  "room_name_create_helper": "Maksymalnie 8 znakÃ³w",
   "room_code": "Kod pokoju",
-  "room_code_join_helper": "Pozostaw puste, je¿eli pokój nie jest chroniony has³em",
-  "room_code_create_helper": "Maksymalnie 20 znaków. Pozostaw puste, je¿eli pokój nie jest chroniony has³em.",
+  "room_code_join_helper": "Pozostaw puste, jeÅ¼eli pokÃ³j nie jest chroniony hasÅ‚em",
+  "room_code_create_helper": "Maksymalnie 20 znakÃ³w. Pozostaw puste, jeÅ¼eli pokÃ³j nie jest chroniony hasÅ‚em.",
   "room_slots": "Miejsca",
-  "room_slots_helper": "Maksymalnie 10 osób.",
+  "room_slots_helper": "Maksymalnie 10 osÃ³b.",
   "toasts": {
     "register": {
-      "success_description": "Teraz mo¿esz zalogowaæ siê swowimi danymi",
+      "success_description": "Teraz moÅ¼esz zalogowaÄ‡ siÄ™ swowimi danymi",
       "success_title": "Sukces!",
       "error_generic": "Niepoprawne dane",
-      "error_title": "B³¹d!"
+      "error_title": "BÅ‚Ä…d!"
     },
     "login": {
-      "success_description": "Jesteœ zalogowany",
+      "success_description": "JesteÅ› zalogowany",
       "success_title": "Sukces!",
-      "error_credentials": "B³êdne dane logowania",
-      "error_title": "B³¹d!"
+      "error_credentials": "BÅ‚Ä™dne dane logowania",
+      "error_title": "BÅ‚Ä…d!"
     },
     "room": {
-      "error_title_generic": "B³¹d!",
-      "error_user_not_in": "Nie nale¿ysz do tego pokoju"
+      "error_title_generic": "BÅ‚Ä…d!",
+      "error_user_not_in": "Nie naleÅ¼ysz do tego pokoju"
     },
     "password_change": {
-      "success_description": "Has³o zosta³o zmienione",
+      "success_description": "HasÅ‚o zostaÅ‚o zmienione",
       "success_title": "Sukces!",
-      "error_credentials": "B³êdne dane logowania",
-      "error_title": "B³¹d!"
+      "error_credentials": "BÅ‚Ä™dne dane logowania",
+      "error_title": "BÅ‚Ä…d!"
     },
     "room_join": {
-      "success_description": "Do³¹czy³eœ do pokoju",
+      "success_description": "DoÅ‚Ä…czyÅ‚eÅ› do pokoju",
       "success_title": "Sukces!",
-      "error_title": "B³¹d!",
+      "error_title": "BÅ‚Ä…d!",
       "error_room_not_found": "Nie znaleziono pokoju",
-      "error_generic": "Nie uda³o siê do³¹czyæ do pokoju. Upewnij siê, ¿e poda³eœ poprawne dane."
+      "error_generic": "Nie udaÅ‚o siÄ™ doÅ‚Ä…czyÄ‡ do pokoju. Upewnij siÄ™, Å¼e podaÅ‚eÅ› poprawne dane."
     },
     "room_create": {
-      "success_description": "Utworzy³eœ pokój. Przekierowywanie do pokoju...",
+      "success_description": "UtworzyÅ‚eÅ› pokÃ³j. Przekierowywanie do pokoju...",
       "success_title": "Sukces!",
-      "error_title": "B³¹d!",
-      "error_generic": "Nie uda³o siê utworzyæ pokoju. Upewnij siê, ¿e poda³eœ poprawne dane."
+      "error_title": "BÅ‚Ä…d!",
+      "error_generic": "Nie udaÅ‚o siÄ™ utworzyÄ‡ pokoju. Upewnij siÄ™, Å¼e podaÅ‚eÅ› poprawne dane."
     }
   },
   "validation": {
     "required": "To pole jest wymagane",
-    "min": "To pole musi mieæ co najmniej %{min} znaków",
-    "max": "To pole musi mieæ co najwy¿ej %{max} znaków",
-    "email": "To pole musi zawieraæ poprawny adres email",
-    "password_match": "Has³a musz¹ byæ takie same"
+    "min": "To pole musi mieÄ‡ co najmniej %{min} znakÃ³w",
+    "max": "To pole musi mieÄ‡ co najwyÅ¼ej %{max} znakÃ³w",
+    "email": "To pole musi zawieraÄ‡ poprawny adres email",
+    "password_match": "HasÅ‚a muszÄ… byÄ‡ takie same"
   }
 }
