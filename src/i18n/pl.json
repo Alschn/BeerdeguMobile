@@ -1,0 +1,94 @@
+{
+  "login": "Logowanie",
+  "register": "Rejestracja",
+  "sign_in": "Zaloguj się",
+  "sign_up": "Załóż konto",
+  "sign_out": "Wyloguj się",
+  "logout": "Wylogowanie",
+  "username": "Nazwa użytkownika",
+  "password": "Hasło",
+  "email": "Email",
+  "confirm_password": "Potwierdź hasło",
+  "change_password": "Zmień hasło",
+  "old_password": "Stare hasło",
+  "new_password": "Nowe hasło",
+  "confirm_new_password": "Potwierdź nowe hasło",
+  "submit": "Zatwierdź",
+  "back": "Cofnij",
+  "welcome_back": "Witaj z powrotem,",
+  "cheers": "Na zdrowie!",
+  "app_version": "Wersja programu: ",
+  "send_feeback": "Podziel się swoją opinią o Beerdegu",
+  "start_tasting": "Rozpocznij degustowanie!",
+  "join": "Dołącz",
+  "join_room": "Dołącz do pokoju",
+  "create": "Stwórz",
+  "create_room": "Stwórz pokój",
+  "room_name": "Nazwa pokoju",
+  "room_name_create_helper": "Maksymalnie 8 znaków",
+  "room_code": "Kod pokoju",
+  "room_code_join_helper": "Pozostaw puste, jeżeli pokój nie jest chroniony hasłem",
+  "room_code_create_helper": "Maksymalnie 20 znaków. Pozostaw puste, jeżeli pokój nie jest chroniony hasłem.",
+  "room_slots": "Miejsca",
+  "room_slots_helper": "Maksymalnie 10 osób.",
+  "search_for_beer": "Szukaj piwa",
+  "screens": {
+    "home": "Strona główna",
+    "login": "Logowanie",
+    "register": "Rejestracja",
+    "welcome": "Strona powitalna",
+    "rooms": "Pokoje",
+    "room": "Pokój",
+    "browser": "Wyszukiwarka",
+    "profile": "Profil",
+    "statistics": "Statystyki",
+    "settings": "Ustawienia",
+    "join": "Dołącz",
+    "create": "Stwórz",
+    "password_change": "Zmiana hasła"
+  },
+  "toasts": {
+    "register": {
+      "success_description": "Teraz możesz zalogować się swoimi danymi",
+      "success_title": "Sukces!",
+      "error_generic": "Niepoprawne dane",
+      "error_title": "Błąd!"
+    },
+    "login": {
+      "success_description": "Jesteś zalogowany",
+      "success_title": "Sukces!",
+      "error_credentials": "Błędne dane logowania",
+      "error_title": "Błąd!"
+    },
+    "room": {
+      "error_title_generic": "Błąd!",
+      "error_user_not_in": "Nie należysz do tego pokoju"
+    },
+    "password_change": {
+      "success_description": "Hasło zostało zmienione",
+      "success_title": "Sukces!",
+      "error_credentials": "Błędne dane logowania",
+      "error_title": "Błąd!"
+    },
+    "room_join": {
+      "success_description": "Dołączyłeś do pokoju",
+      "success_title": "Sukces!",
+      "error_title": "Błąd!",
+      "error_room_not_found": "Nie znaleziono pokoju",
+      "error_generic": "Nie udało się dołączyć do pokoju. Upewnij się, że podałeś poprawne dane."
+    },
+    "room_create": {
+      "success_description": "Utworzyłeś pokój. Przekierowywanie do pokoju...",
+      "success_title": "Sukces!",
+      "error_title": "Błąd!",
+      "error_generic": "Nie udało się utworzyć pokoju. Upewnij się, że podałeś poprawne dane."
+    }
+  },
+  "validation": {
+    "required": "To pole jest wymagane",
+    "min": "To pole musi mieć co najmniej %{min} znaków",
+    "max": "To pole musi mieć co najwyżej %{max} znaków",
+    "email": "To pole musi zawierać poprawny adres email",
+    "password_match": "Hasła muszą być takie same"
+  }
+}

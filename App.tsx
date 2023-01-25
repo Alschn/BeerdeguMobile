@@ -1,23 +1,23 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import "react-native-gesture-handler";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import AuthContextProvider from "./src/context/AuthContext";
+import TranslationContextProvider from "./src/context/TranslationContext";
+import AppNavigation from "./src/navigation/AppNavigation";
+import { NativeBaseProvider } from "native-base"; // https://docs.nativebase.io/
+import theme from "./src/theme";
+
+const queryClient = new QueryClient();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Hello Beerdegu Mobile!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <QueryClientProvider client={queryClient}>
+      <NativeBaseProvider theme={theme}>
+        <TranslationContextProvider>
+          <AuthContextProvider>
+            <AppNavigation />
+          </AuthContextProvider>
+        </TranslationContextProvider>
+      </NativeBaseProvider>
+    </QueryClientProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    fontWeight: "bold",
-  },
-});
