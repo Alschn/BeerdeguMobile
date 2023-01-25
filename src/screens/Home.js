@@ -44,7 +44,7 @@ const HomeScreen = ({ navigation }) => {
 
       <Button.Group space={5}>
         <Button onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-          {t("start_degusting").toUpperCase()}
+          {t("start_tasting").toUpperCase()}
         </Button>
 
         <Button onPress={() => completeLogout()} colorScheme="red">
