@@ -2,6 +2,7 @@ import {
   FC,
   useCallback,
   useEffect,
+  useMemo,
   useReducer,
   useRef,
   useState,
@@ -18,6 +19,12 @@ import {
   Select,
   TextArea,
   Box,
+  Button,
+  Icon,
+  Spacer,
+  AlertDialog,
+  Spinner,
+  Modal,
 } from "native-base";
 import { useRoomContext } from "../../context/RoomContext";
 import { Beer, UserRating } from "../../api/types";
@@ -26,6 +33,7 @@ import { useTranslation } from "../../context/TranslationContext";
 import { WS_BASE_URL } from "../../config";
 import useWebsocket from "react-native-use-websocket";
 import { useAuth } from "../../context/AuthContext";
+import { AntDesign } from "@expo/vector-icons";
 
 const FORM_SAVE_INTERVAL_MS = 5000;
 
@@ -65,16 +73,15 @@ const { width, height } = Dimensions.get("window");
 
 interface BeerStepProps {
   beer: Beer;
-  index: number;
-  activeStep: number;
+  shouldAutoSave: boolean;
 }
 
-const BeerStep: FC<BeerStepProps> = ({ beer, index, activeStep }) => {
+const BeerStep: FC<BeerStepProps> = ({ beer, shouldAutoSave }) => {
   const { code } = useRoomContext();
   const { token } = useAuth();
   const { t } = useTranslation();
 
-  const [state, dispatch] = useReducer(formReducer, initialState);
+  const [state, dispatch] = useReducer(formReducer, beer, () => initialState);
 
   const { sendJsonMessage } = useWebsocket(`${WS_BASE_URL}/room/${code}/`, {
     queryParams: {
@@ -84,7 +91,12 @@ const BeerStep: FC<BeerStepProps> = ({ beer, index, activeStep }) => {
     share: true,
     onMessage: (event) => {
       const parsed = JSON.parse(event.data);
-      if (parsed.command === "set_form_data") {
+      if (
+        parsed.command === "set_form_data" &&
+        Number(parsed.beer_id) === Number(beer.id)
+      ) {
+        console.debug(`set_form_data - ${beer.id} - received from server`);
+        console.debug({ ...parsed.data, beerId: beer.id });
         dispatch({
           type: "FETCH_FORM_DATA",
           payload: parsed.data,
@@ -92,6 +104,14 @@ const BeerStep: FC<BeerStepProps> = ({ beer, index, activeStep }) => {
       }
     },
   });
+
+  useEffect(() => {
+    console.debug(`get_form_data - ${beer.id} - ask server for data`);
+    sendJsonMessage({
+      command: "get_form_data",
+      data: beer.id,
+    });
+  }, [beer.id]);
 
   const handleInputChange = (field: string, value: string | number): void => {
     dispatch({
@@ -102,13 +122,33 @@ const BeerStep: FC<BeerStepProps> = ({ beer, index, activeStep }) => {
   };
 
   // useEffect(() => {
-  //   // load current form
-  //   console.debug("get_form_data", beer.id);
+  //   if (!shouldAutoSave) return;
+  //   console.debug(
+  //     `user_form_save - ${beer.id} - sending to server (forced save)`
+  //   );
+  //   console.debug({ ...state, beer_id: beer.id });
   //   sendJsonMessage({
-  //     command: "get_form_data",
-  //     data: beer.id,
+  //     command: "user_form_save",
+  //     data: {
+  //       beer_id: beer.id,
+  //       ...state,
+  //     },
   //   });
-  // }, [beer.id]);
+  // }, [shouldAutoSave, state, beer.id]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.debug(`saving state beer: ${beer.id}`, state);
+      sendJsonMessage({
+        command: "user_form_save",
+        data: {
+          beer_id: beer.id,
+          ...state,
+        },
+      });
+    }, FORM_SAVE_INTERVAL_MS);
+    return () => clearInterval(interval);
+  }, [state, beer.id]);
 
   return (
     <ScrollView w={width}>
@@ -209,7 +249,6 @@ const BeerStep: FC<BeerStepProps> = ({ beer, index, activeStep }) => {
             >
               {Array.from({ length: 10 }, (_, i) => (
                 <Select.Item
-                  size="xl"
                   label={`${i + 1}`}
                   value={`${i + 1}`}
                   key={`select-note-${i + 1}`}
@@ -223,6 +262,14 @@ const BeerStep: FC<BeerStepProps> = ({ beer, index, activeStep }) => {
   );
 };
 
+const AutoSavingModal = ({ isOpen }: { isOpen: boolean }) => {
+  return (
+    <Modal isOpen={isOpen} closeOnOverlayClick={false}>
+      <Spinner size="lg" />
+    </Modal>
+  );
+};
+
 const InProgress: FC = () => {
   const {
     state: { beers },
@@ -230,36 +277,72 @@ const InProgress: FC = () => {
   const { t } = useTranslation();
 
   const [activeStep, setActiveStep] = useState<number>(0);
+  const [forceAutoSave, setForceAutoSave] = useState<boolean>(false);
+  const maxSteps = beers.length;
 
-  const handleViewableItemsChanged = useCallback(({ viewableItems }: any) => {
-    setActiveStep(viewableItems[0].index);
-  }, []);
+  const handleNext = (): void => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    // setForceAutoSave(true);
+    // setTimeout(() => {
+    //   setForceAutoSave(false);
+    // }, 1000);
+    // setTimeout(() => {
+    //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    // }, 1200);
+  };
 
-  const renderItem = useCallback(
-    ({ item, index }: { item: Beer; index: number }) => {
-      return <BeerStep beer={item} index={index} activeStep={activeStep} />;
-    },
-    [beers, activeStep]
-  );
+  const handleBack = (): void => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    // setForceAutoSave(true);
+    // setTimeout(() => {
+    //   setForceAutoSave(false);
+    // }, 1000);
+    // setTimeout(() => {
+    //   setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    // }, 1200);
+  };
+
+  const activeBeer = useMemo(() => {
+    if (!beers.length) return null;
+    return beers[activeStep];
+  }, [beers, activeStep, forceAutoSave]);
 
   return (
     <Center flex={1} py={2}>
+      <AutoSavingModal isOpen={forceAutoSave} />
       <View mb={2}>
         <Text fontSize="2xl">{t("room_state")}: IN_PROGRESS</Text>
       </View>
 
-      <FlatList
-        data={beers}
-        renderItem={renderItem}
-        keyExtractor={(item) => `step-${item.id}`}
-        horizontal
-        pagingEnabled
-        snapToAlignment="center"
-        onViewableItemsChanged={handleViewableItemsChanged}
-        viewabilityConfig={{
-          itemVisiblePercentThreshold: 50,
-        }}
-      />
+      <Button.Group mb={2} px={4}>
+        <Button
+          isDisabled={activeStep === 0}
+          leftIcon={<Icon as={AntDesign} name="left" />}
+          onPress={handleBack}
+          size="sm"
+        >
+          {t("room.previous")}
+        </Button>
+
+        <Center flex={1}>
+          <Text textAlign="center" fontWeight="600">
+            {activeStep + 1} / {maxSteps}
+          </Text>
+        </Center>
+
+        <Button
+          isDisabled={activeStep === maxSteps - 1}
+          rightIcon={<Icon as={AntDesign} name="right" />}
+          onPress={handleNext}
+          size="sm"
+        >
+          {t("room.next")}
+        </Button>
+      </Button.Group>
+
+      {!!activeBeer && (
+        <BeerStep beer={activeBeer} shouldAutoSave={forceAutoSave} />
+      )}
     </Center>
   );
 };

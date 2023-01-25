@@ -61,7 +61,7 @@
         "settings": "Settings",
         "join": "Join",
         "create": "Create",
-        "password_change": "Change Password",
+        "password_change": "Change Password"
     },
     "room": {
         "beer_name_short": "Name",
@@ -97,7 +97,9 @@
             "start_session": "Start Session",
             "resume_session": "Resume Session",
             "get_ratings_and_statistics": "Get Ratings and Statistics"
-        }
+        },
+        "next": "Next",
+        "previous": "Previous"
     },
     "toasts": {
         "register": {
