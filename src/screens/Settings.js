@@ -10,8 +10,7 @@ const SettingsScreen = () => {
 
   return (
     <Center flex={1}>
-          {/*<Text style={{ height: "30%" }} >Settings screen</Text>*/}
-      <Image style={{flex: 2, resizeMode: 'contain'}} source={require("../assets/settings_icon.png")} alt="Settings screen"></Image>
+      <Image style={{ flex: 4, resizeMode: 'contain' }} source={require("../assets/settings_icon.png")} alt="Settings screen"></Image>
       <View style={{ flex: 1 }}></View>
       <Button style={{width: "40%"}} onPress={() => navigate.navigate("PasswordChange")}>
         {t("change_password")}
@@ -26,17 +25,9 @@ const SettingsScreen = () => {
       <View style={{ flex: 1 }}></View>
 
       <Box
-        px={8}
-        pb={4}
-        rounded="lg"
-        borderWidth="1"
-        borderColor="coolGra.200"
-        backgroundColor="gray.50"
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center'
-           }}
-          >{t("app_version")} {packageData.version}</Box>
+        px={8} b={4} rounded="lg" borderWidth="1" borderColor="coolGra.200" backgroundColor="gray.50"
+        style={{ width : "40%", alignItems: 'center', justifyContent: 'center' }}>
+              {t("app_version")} {packageData.version}</Box>
       <View style={{ flex: 1 }}></View>
     </Center>
   );
