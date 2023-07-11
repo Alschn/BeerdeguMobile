@@ -8,6 +8,7 @@ interface RoomContextValues {
   sendMessage: (...args: any) => {};
   dispatch: Dispatch<RoomAction>;
   state: RoomState;
+  token: string;
 }
 
 const RoomContext = createContext({} as RoomContextValues);

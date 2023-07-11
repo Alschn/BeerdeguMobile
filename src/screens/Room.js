@@ -82,7 +82,6 @@ const useCheckUserInRoomQuery = (roomId, roomName) => {
 const RoomScreen = ({ navigation, drawerNavigation }) => {
   const route = useRoute();
   const { roomId, roomName } = route.params;
-  const { token } = useAuth();
 
   useLayoutEffect(() => {
     drawerNavigation.setOptions({
@@ -104,18 +103,8 @@ const RoomScreen = ({ navigation, drawerNavigation }) => {
   } = useCheckUserInRoomQuery(roomId, roomName);
 
   const isHost = userInRoomData?.data?.is_host || false;
+  const token = userInRoomData?.data?.token || "";
 
-  const { isLoading, isError, data, refetch, isRefetching } = useQuery(
-    ["rooms", { roomId, roomName }],
-    ({ queryKey }) => RoomsService.getRoom(queryKey[1].roomName),
-    {
-      enabled: userInRoomSuccess,
-      onSuccess: (res) => setShouldConnect(true),
-      onError: (error) => setShouldConnect(false),
-    }
-  );
-
-  const [shouldConnect, setShouldConnect] = useState(false);
   const [state, dispatch] = useReducer(roomReducer, initialRoomState);
 
   const { sendJsonMessage, readyState } = useWebsocket(
@@ -138,7 +127,7 @@ const RoomScreen = ({ navigation, drawerNavigation }) => {
       reconnectAttempts: WS_TRY_RECONNECT_TIMES,
       shared: true,
     },
-    shouldConnect
+    userInRoomSuccess && !!token
   );
 
   const connectionStatus = WebsocketStatus[readyState];
@@ -246,6 +235,7 @@ const RoomScreen = ({ navigation, drawerNavigation }) => {
         sendMessage: sendJsonMessage,
         dispatch,
         state,
+        token,
       }}
     >
       {state.roomState === RoomState.WAITING && <Waiting />}

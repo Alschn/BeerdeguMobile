@@ -20,7 +20,6 @@ import { Dimensions } from "react-native";
 import { useTranslation } from "../../context/TranslationContext";
 import { WS_BASE_URL } from "../../config";
 import useWebsocket from "react-native-use-websocket";
-import { useAuth } from "../../context/AuthContext";
 import { AntDesign } from "@expo/vector-icons";
 
 const WS_FORM_SAVE_INTERVAL_MS = 5000;
@@ -65,33 +64,36 @@ interface BeerStepProps {
 }
 
 const BeerStep: FC<BeerStepProps> = ({ beer, shouldAutoSave }) => {
-  const { code } = useRoomContext();
-  const { token } = useAuth();
+  const { code, token } = useRoomContext();
   const { t } = useTranslation();
 
   const [state, dispatch] = useReducer(formReducer, beer, () => initialState);
 
-  const { sendJsonMessage } = useWebsocket(`${WS_BASE_URL}/room/${code}/`, {
-    queryParams: {
-      token: token || "",
+  const { sendJsonMessage } = useWebsocket(
+    `${WS_BASE_URL}/room/${code}/`,
+    {
+      queryParams: {
+        token: token,
+      },
+      shouldReconnect: () => true,
+      share: true,
+      onMessage: (event) => {
+        const parsed = JSON.parse(event.data);
+        if (
+          parsed.command === "set_form_data" &&
+          Number(parsed.beer_id) === Number(beer.id)
+        ) {
+          console.debug(`set_form_data - ${beer.id} - received from server`);
+          console.debug({ ...parsed.data, beerId: beer.id });
+          dispatch({
+            type: "FETCH_FORM_DATA",
+            payload: parsed.data,
+          });
+        }
+      },
     },
-    shouldReconnect: () => true,
-    share: true,
-    onMessage: (event) => {
-      const parsed = JSON.parse(event.data);
-      if (
-        parsed.command === "set_form_data" &&
-        Number(parsed.beer_id) === Number(beer.id)
-      ) {
-        console.debug(`set_form_data - ${beer.id} - received from server`);
-        console.debug({ ...parsed.data, beerId: beer.id });
-        dispatch({
-          type: "FETCH_FORM_DATA",
-          payload: parsed.data,
-        });
-      }
-    },
-  });
+    !!token
+  );
 
   useEffect(() => {
     console.debug(`get_form_data - ${beer.id} - ask server for data`);
